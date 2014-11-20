@@ -10,8 +10,12 @@ public class TSPClu extends Job {
 
 		String arguments = "";
 
-		for (String s : args) {
-			arguments += s + " ";
+		for (int i = 0; i < args.length; i++) {
+			arguments += args[i];
+
+			if (i != args.length - 1) {
+				arguments += " ";
+			}
 		}
 
 		masterFor(0, n, TSPWorkerTask.class).args(arguments);
@@ -34,7 +38,7 @@ public class TSPClu extends Job {
 
 		@Override
 		public void main(String[] args) throws Exception {
-
+			
 		}
 
 	}
@@ -43,6 +47,11 @@ public class TSPClu extends Job {
 
 		@Override
 		public void main(String[] args) throws Exception {
+			int K = Integer.parseInt(args[0]);
+
+			for (int i = 0; i < K; i++) {
+				
+			}
 
 		}
 

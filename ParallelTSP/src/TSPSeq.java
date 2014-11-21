@@ -1,11 +1,10 @@
 import java.util.Scanner;
-
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 
 public class TSPSeq extends Task {
 
-	public void main(String[] args) throws Exception {
+	public void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);
 

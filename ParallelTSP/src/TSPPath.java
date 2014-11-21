@@ -67,5 +67,4 @@ public class TSPPath extends Tuple implements Vbl {
 		this.cost = arg.cost;
 		this.path = new IntList(arg.path);
 	}
-
 }

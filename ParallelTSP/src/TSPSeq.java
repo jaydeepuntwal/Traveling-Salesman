@@ -8,9 +8,7 @@ public class TSPSeq extends Task {
 
 		Scanner matrixScanner = new Scanner(System.in);
 
-		int matrixSize = matrixScanner.nextInt();
-		
-		matrixScanner.nextLine();
+		int matrixSize = Integer.parseInt(matrixScanner.nextLine());
 
 		int[][] distance = new int[matrixSize][matrixSize];
 		String[] city = new String[matrixSize];
@@ -79,6 +77,6 @@ public class TSPSeq extends Task {
 				System.out.println(city[tspPath.path.removeFirst()]);
 		}
 		
-		System.out.print("Total Cost: " + tspPath.cost);
+		System.out.println("Total Cost: " + tspPath.cost);
 	}
 }

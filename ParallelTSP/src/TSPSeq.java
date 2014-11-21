@@ -93,7 +93,7 @@ public class TSPSeq extends Job {
 					System.out.println(city[tspPath.path.removeFirst()]);
 			}
 
-			System.out.println("Total Cost: " + tspPath.cost/1000);
+			System.out.println("Total Cost: " + tspPath.cost/1000 + " Miles");
 		}
 	}
 

@@ -30,9 +30,11 @@ public class InputGenerator extends Job {
 
 			final String cities[] = new String[n];
 
+			sc.nextLine();
+			
 			for (int i = 0; i < n; i++) {
 
-				cities[i] = sc.next();
+				cities[i] = sc.nextLine();
 			}
 
 			sc.close();

@@ -32,6 +32,7 @@ public class TSPSeq extends Task {
 		boolean[] visited = new boolean[matrixSize];
 		List<Integer> listOfCities;
 		
+		// wow
 		for (int i = 0; i < matrixSize; i++) {
 			
 			min = distance[i][i + 1];

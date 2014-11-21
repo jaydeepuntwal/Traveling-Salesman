@@ -32,6 +32,8 @@ public class TSPClu extends Job {
 			}
 		}
 
+		scan.close();
+
 		int K = workers();
 		if (K == DEFAULT_WORKERS) {
 			K = 1;

@@ -8,6 +8,8 @@ public class TSPSeq extends Task {
 
 		Scanner scan = new Scanner(System.in);
 
+		scan.nextLine();
+		
 		int n = scan.nextInt();
 
 		scan.nextLine();
@@ -24,6 +26,8 @@ public class TSPSeq extends Task {
 				distance[i][j] = scan.nextInt();
 			}
 		}
+
+		scan.close();
 
 		int min;
 		int index;

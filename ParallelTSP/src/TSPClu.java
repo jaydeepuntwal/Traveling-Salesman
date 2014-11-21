@@ -15,7 +15,7 @@ public class TSPClu extends Job {
 
 		Scanner scan = new Scanner(System.in);
 
-		int n = scan.nextInt();
+		int n = Integer.parseInt(scan.nextLine());
 		String[] city = new String[n];
 		int[][] distance = new int[n][n];
 

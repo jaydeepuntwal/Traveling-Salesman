@@ -76,9 +76,9 @@ public class TSPSeq extends Task {
 			if (tspPath.path.size() != 1)
 				System.out.print(city[tspPath.path.removeFirst()] + " --> ");
 			else
-				System.out.print(city[tspPath.path.removeFirst()] + " - Total Cost : ");
+				System.out.println(city[tspPath.path.removeFirst()]);
 		}
 		
-		System.out.print(tspPath.cost);
+		System.out.print("Total Cost: " + tspPath.cost);
 	}
 }

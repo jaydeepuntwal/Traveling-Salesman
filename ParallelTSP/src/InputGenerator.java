@@ -8,13 +8,15 @@ import edu.rit.pj2.Task;
 
 public class InputGenerator extends Task {
 	IntVbl distMat[][];
+	int n;
+	GoogleMapsAPI gapi = new GoogleMapsAPI();
 
 	public void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		final GoogleMapsAPI gapi = new GoogleMapsAPI();
+		gapi = new GoogleMapsAPI();
 
-		final int n = Integer.parseInt(sc.nextLine());
+		n = sc.nextInt();
 		distMat = new IntVbl[n][n];
 		final IntVbl distMat[][] = new IntVbl[n][n];
 
@@ -22,9 +24,9 @@ public class InputGenerator extends Task {
 
 		for (int i = 0; i < n; i++) {
 
-			cities[i] = sc.nextLine();
+			cities[i] = sc.next();
 		}
-		
+
 		sc.close();
 		System.out.println(n);
 		for (int i = 0; i < n; i++) {

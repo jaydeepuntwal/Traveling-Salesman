@@ -1,6 +1,4 @@
-import java.io.File;
 import java.util.Scanner;
-
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 
@@ -75,37 +73,12 @@ public class TSPSeq extends Task {
 		
 		// Display results
 		while (!tspPath.path.isEmpty()) {
-			System.out.println(city[tspPath.path.removeFirst()]);
+			if (tspPath.path.size() != 1)
+				System.out.print(city[tspPath.path.removeFirst()] + " --> ");
+			else
+				System.out.print(city[tspPath.path.removeFirst()] + " - Total Cost : ");
 		}
 		
-		System.out.println(tspPath.cost);
+		System.out.print(tspPath.cost);
 	}
-
-	/*private void performTSP(int currCity, int matrixSize, int[][] distance) {
-
-		int min = distance[currCity][currCity + 1];
-		int index = currCity + 1;
-		boolean[] visited = new boolean[matrixSize];
-		
-		for (int i = 0; i < matrixSize; i++) {
-			visited[i] = false;
-		}
-		
-		visited[currCity] = true;
-		
-		List<Integer> listOfCities = new ArrayList<Integer>();
-		listOfCities.add(currCity);
-		
-		while (listOfCities.size() != matrixSize) {
-			for (int i = 0; i < matrixSize; i++) {
-				if ((distance[currCity][i] < min) && (!visited[i])) {
-					min = distance[currCity][i];
-					index = i;
-				}
-			}
-			
-			visited[index] = true;
-			listOfCities.add(index);						
-		}
-	}*/
 }

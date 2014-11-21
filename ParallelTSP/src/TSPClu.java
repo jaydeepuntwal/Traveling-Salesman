@@ -152,8 +152,8 @@ public class TSPClu extends Job {
 						listOfCities.addLast(index);
 					}
 
-					cost += info.distance[listOfCities.get(listOfCities.size() - 1)][i];
-					listOfCities.addLast(i);
+					//cost += info.distance[listOfCities.get(listOfCities.size() - 1)][i];
+					//listOfCities.addLast(i);
 
 					thrPath.reduce(new TSPPath(cost, listOfCities));
 

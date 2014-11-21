@@ -1,15 +1,14 @@
 import java.util.Scanner;
 
-import edu.rit.pj2.Job;
+import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 
-// Job
-public class TSPSeq extends Job {
+public class TSPSeq extends Task {
 
 	public void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);
-		
+
 		int n = scan.nextInt();
 
 		scan.nextLine();

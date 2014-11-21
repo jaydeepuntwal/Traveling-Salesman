@@ -19,8 +19,6 @@ public class TSPClu extends Job {
 		String[] city = new String[n];
 		int[][] distance = new int[n][n];
 
-		scan.nextLine();
-
 		for (int i = 0; i < n; i++) {
 			city[i] = scan.nextLine();
 		}
@@ -151,6 +149,9 @@ public class TSPClu extends Job {
 						visited[index] = true;
 						listOfCities.addLast(index);
 					}
+
+					cost += info.distance[listOfCities.get(listOfCities.size() - 1)][i];
+					listOfCities.addLast(i);
 
 					thrPath.reduce(new TSPPath(cost, listOfCities));
 

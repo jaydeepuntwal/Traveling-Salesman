@@ -5,19 +5,21 @@ import edu.rit.io.OutStream;
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Task;
 import edu.rit.pj2.Tuple;
-import edu.rit.pj2.Vbl;
-import edu.rit.util.IntList;
 
 public class TSPClu extends Job {
 
 	public void main(String[] args) {
 
 		int n = Integer.parseInt(args[0]);
+		String[] cities = new String[n];
+		int[][] distance = new int[n][n];
 
 		int K = workers();
 		if (K == DEFAULT_WORKERS) {
 			K = 1;
 		}
+
+		TSPInformation info = new TSPInformation(n, cities, distance);
 
 		masterFor(0, n - 1, TSPWorkerTask.class).args(args);
 
@@ -26,16 +28,16 @@ public class TSPClu extends Job {
 				.runInJobProcess();
 	}
 
-	private static class InformationTuple extends Tuple {
+	private static class TSPInformation extends Tuple {
 		int n;
 		String[] cities;
 		int[][] distance;
 
-		InformationTuple() {
+		TSPInformation() {
 
 		}
 
-		InformationTuple(int n, String[] cities, int[][] distance) {
+		TSPInformation(int n, String[] cities, int[][] distance) {
 			this.n = n;
 			this.cities = cities;
 			this.distance = distance;
@@ -72,12 +74,13 @@ public class TSPClu extends Job {
 
 	}
 
-	
 	private static class TSPWorkerTask extends Task {
 
 		@Override
 		public void main(String[] args) throws Exception {
-			System.out.println(args[0]);
+			TSPInformation template = new TSPInformation();
+			TSPInformation info = readTuple(template);
+
 		}
 
 	}
@@ -87,6 +90,9 @@ public class TSPClu extends Job {
 		@Override
 		public void main(String[] args) throws Exception {
 			int K = Integer.parseInt(args[0]);
+
+			TSPInformation infoTemplate = new TSPInformation();
+			TSPInformation info = readTuple(infoTemplate);
 
 			TSPPath template = new TSPPath();
 			template.rank = 0;

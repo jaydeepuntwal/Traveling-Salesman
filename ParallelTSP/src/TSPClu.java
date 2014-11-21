@@ -32,6 +32,20 @@ public class TSPClu extends Job {
 			}
 		}
 
+		System.out.println("===================");
+		System.out.println("No: " + n);
+
+		for (int i = 0; i < city.length; i++) {
+			System.out.print(city[i] + "\t");
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				System.out.print(distance[i][j] + "\t");
+			}
+			System.out.println();
+		}
+
 		scan.close();
 
 		int K = workers();

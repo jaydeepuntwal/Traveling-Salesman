@@ -120,6 +120,7 @@ public class TSPClu extends Job {
 				IntList listOfCities;
 				TSPPath thrPath;
 				int cost;
+				int lastCity;
 
 				@Override
 				public void start() {
@@ -149,11 +150,12 @@ public class TSPClu extends Job {
 					listOfCities.addLast(i);
 
 					while (listOfCities.size() != info.n) {
+						lastCity = listOfCities.get(listOfCities.size() - 1);
 						min = Integer.MAX_VALUE;
 						index = -1;
 						for (int j = 0; j < info.n; j++) {
-							if ((info.distance[i][j] < min) && (!visited[j])) {
-								min = info.distance[i][j];
+							if ((info.distance[lastCity][j] < min) && (!visited[j])) {
+								min = info.distance[lastCity][j];
 								index = j;
 							}
 						}

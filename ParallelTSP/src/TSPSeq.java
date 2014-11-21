@@ -33,6 +33,7 @@ public class TSPSeq extends Task {
 		IntList listOfCities;
 		TSPPath tspPath = new TSPPath();
 		int cost;
+		int lastCity;
 
 		// Determines the first city from where the path is to be started
 		for (int i = 0; i < n; i++) {
@@ -55,10 +56,11 @@ public class TSPSeq extends Task {
 
 			while (listOfCities.size() != n) {
 				min = Integer.MAX_VALUE;
+				lastCity = listOfCities.get(listOfCities.size() - 1);
 				index = -1;
 				for (int j = 0; j < n; j++) {
-					if ((distance[i][j] < min) && (!visited[j])) {
-						min = distance[i][j];
+					if ((distance[lastCity][j] < min) && (!visited[j])) {
+						min = distance[lastCity][j];
 						index = j;
 					}
 				}

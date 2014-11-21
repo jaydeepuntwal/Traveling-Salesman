@@ -9,7 +9,7 @@ import edu.rit.pj2.Task;
 public class InputGenerator extends Task {
 	IntVbl distMat[][];
 	int n;
-	GoogleMapsAPI gapi = new GoogleMapsAPI();
+	GoogleMapsAPI gapi;
 
 	public void main(String[] args) {
 

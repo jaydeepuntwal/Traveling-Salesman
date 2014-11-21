@@ -72,69 +72,7 @@ public class TSPClu extends Job {
 
 	}
 
-	private static class TSPTuple extends Tuple implements Vbl {
-
-		int rank;
-		int cost;
-		IntList path;
-
-		TSPTuple() {
-			this.path = new IntList();
-		}
-
-		TSPTuple(int cost, IntList path) {
-			this.cost = cost;
-			this.path = path;
-		}
-
-		/*
-		 * Match template with rank
-		 */
-		public boolean matchContent(Tuple target) {
-			TSPTuple rt = (TSPTuple) target;
-			return this.rank == rt.rank;
-		}
-
-		/*
-		 * Serialize Write
-		 */
-		public void writeOut(OutStream out) throws IOException {
-			out.writeInt(rank);
-			out.writeInt(cost);
-			out.writeFields(path);
-		}
-
-		/*
-		 * Serialize Read
-		 */
-		public void readIn(InStream in) throws IOException {
-			rank = in.readInt();
-			cost = in.readInt();
-			path = in.readFields(path);
-		}
-
-		@Override
-		public TSPTuple clone() {
-			return new TSPTuple(this.cost, new IntList(this.path));
-		}
-
-		@Override
-		public void reduce(Vbl arg0) {
-			TSPTuple arg = (TSPTuple) arg0;
-			if (arg.cost < this.cost) {
-				this.set(arg0);
-			}
-		}
-
-		@Override
-		public void set(Vbl arg0) {
-			TSPTuple arg = (TSPTuple) arg0;
-			this.cost = arg.cost;
-			this.path = new IntList(arg.path);
-		}
-
-	}
-
+	
 	private static class TSPWorkerTask extends Task {
 
 		@Override
@@ -150,12 +88,12 @@ public class TSPClu extends Job {
 		public void main(String[] args) throws Exception {
 			int K = Integer.parseInt(args[0]);
 
-			TSPTuple template = new TSPTuple();
+			TSPPath template = new TSPPath();
 			template.rank = 0;
 
-			TSPTuple tt;
+			TSPPath tt;
 
-			TSPTuple bestTT = null;
+			TSPPath bestTT = null;
 
 			for (int i = 0; i < K; i++) {
 				tt = takeTuple(template);

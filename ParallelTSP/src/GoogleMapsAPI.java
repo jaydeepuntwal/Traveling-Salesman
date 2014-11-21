@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class GoogleMapsAPI {
+	@SuppressWarnings("deprecation")
 	public int getDistance(String locationA, String locationB) {
 
 		try {

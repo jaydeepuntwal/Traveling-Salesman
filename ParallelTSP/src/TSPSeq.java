@@ -71,7 +71,7 @@ public class TSPSeq extends Task {
 			tspPath.reduce(new TSPPath(cost, listOfCities));
 		}
 		
-		// Display the results
+		// Display results
 		while (!tspPath.path.isEmpty()) {
 			System.out.println(city[tspPath.path.removeFirst()]);
 			System.out.println(tspPath.cost);

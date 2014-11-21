@@ -76,8 +76,9 @@ public class TSPSeq extends Task {
 		// Display results
 		while (!tspPath.path.isEmpty()) {
 			System.out.println(city[tspPath.path.removeFirst()]);
-			System.out.println(tspPath.cost);
 		}
+		
+		System.out.println(tspPath.cost);
 	}
 
 	/*private void performTSP(int currCity, int matrixSize, int[][] distance) {

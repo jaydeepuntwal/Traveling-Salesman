@@ -1,36 +1,56 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 import edu.rit.io.InStream;
 import edu.rit.io.OutStream;
 import edu.rit.pj2.Job;
+import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;
 import edu.rit.pj2.Tuple;
+import edu.rit.util.IntList;
 
 public class TSPClu extends Job {
 
 	public void main(String[] args) {
 
-		int n = Integer.parseInt(args[0]);
-		String[] cities = new String[n];
+		Scanner scan = new Scanner(System.in);
+
+		int n = scan.nextInt();
+		String[] city = new String[n];
 		int[][] distance = new int[n][n];
+
+		scan.nextLine();
+
+		for (int i = 0; i < n; i++) {
+			city[i] = scan.nextLine();
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				distance[i][j] = scan.nextInt();
+			}
+		}
+
+		scan.close();
 
 		int K = workers();
 		if (K == DEFAULT_WORKERS) {
 			K = 1;
 		}
 
-		TSPInformation info = new TSPInformation(n, cities, distance);
+		TSPInformation info = new TSPInformation(n, city, distance);
+		putTuple(info);
 
-		masterFor(0, n - 1, TSPWorkerTask.class).args(args);
+		masterFor(0, n - 1, TSPWorkerTask.class);
 
 		// Set up Final task.
-		rule().atFinish().task(TSPReduceTask.class).args("" + K + " " + args)
+		rule().atFinish().task(TSPReduceTask.class).args("" + K)
 				.runInJobProcess();
 	}
 
 	private static class TSPInformation extends Tuple {
 		int n;
-		String[] cities;
+		String[] city;
 		int[][] distance;
 
 		TSPInformation() {
@@ -39,7 +59,7 @@ public class TSPClu extends Job {
 
 		TSPInformation(int n, String[] cities, int[][] distance) {
 			this.n = n;
-			this.cities = cities;
+			this.city = cities;
 			this.distance = distance;
 		}
 
@@ -48,7 +68,7 @@ public class TSPClu extends Job {
 		 */
 		public void writeOut(OutStream out) throws IOException {
 			out.writeInt(n);
-			out.writeStringArray(cities);
+			out.writeStringArray(city);
 
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
@@ -63,7 +83,7 @@ public class TSPClu extends Job {
 		 */
 		public void readIn(InStream in) throws IOException {
 			n = in.readInt();
-			cities = in.readStringArray();
+			city = in.readStringArray();
 
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
@@ -76,11 +96,70 @@ public class TSPClu extends Job {
 
 	private static class TSPWorkerTask extends Task {
 
+		static TSPPath bestPath = new TSPPath();
+
 		@Override
 		public void main(String[] args) throws Exception {
-			TSPInformation template = new TSPInformation();
-			TSPInformation info = readTuple(template);
+			TSPInformation infoTemplate = new TSPInformation();
+			final TSPInformation info = readTuple(infoTemplate);
 
+			workerFor().exec(new Loop() {
+
+				int min;
+				int index;
+				boolean[] visited;
+				IntList listOfCities;
+				TSPPath thrPath;
+				int cost;
+
+				@Override
+				public void start() {
+					thrPath = threadLocal(bestPath);
+				}
+
+				@Override
+				public void run(int i) throws Exception {
+
+					cost = 0;
+
+					visited = new boolean[info.n];
+
+					for (int j = 0; j < info.n; j++) {
+						visited[j] = false;
+					}
+
+					// We start from the ith city
+					visited[i] = true;
+
+					// Initialize the list
+					listOfCities = new IntList();
+
+					// Add the first city to the list
+					listOfCities.addLast(i);
+
+					while (listOfCities.size() != info.n) {
+						min = Integer.MAX_VALUE;
+						index = -1;
+						for (int j = 0; j < info.n; j++) {
+							if ((info.distance[i][j] < min) && (!visited[j])) {
+								min = info.distance[i][j];
+								index = j;
+							}
+						}
+
+						cost += min;
+						visited[index] = true;
+						listOfCities.addLast(index);
+					}
+
+					thrPath.reduce(new TSPPath(cost, listOfCities));
+
+				}
+
+			});
+
+			bestPath.rank = taskRank();
+			putTuple(bestPath);
 		}
 
 	}
@@ -92,7 +171,7 @@ public class TSPClu extends Job {
 			int K = Integer.parseInt(args[0]);
 
 			TSPInformation infoTemplate = new TSPInformation();
-			TSPInformation info = readTuple(infoTemplate);
+			TSPInformation info = takeTuple(infoTemplate);
 
 			TSPPath template = new TSPPath();
 			template.rank = 0;
@@ -111,11 +190,16 @@ public class TSPClu extends Job {
 				template.rank++;
 			}
 
-			for (int i = 0; i < bestTT.path.size(); i++) {
-				System.out.println(i);
+			// Display results
+			while (!bestTT.path.isEmpty()) {
+				if (bestTT.path.size() != 1)
+					System.out.print(info.city[bestTT.path.removeFirst()]
+							+ " --> ");
+				else
+					System.out.println(info.city[bestTT.path.removeFirst()]);
 			}
 
-			System.out.println(bestTT.cost);
+			System.out.println("Total Cost: " + bestTT.cost);
 
 		}
 

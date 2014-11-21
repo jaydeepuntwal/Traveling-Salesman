@@ -63,6 +63,7 @@ public class TSPClu extends Job {
 		TSPInformation(int n, String[] cities, int[][] distance) {
 			this.n = n;
 			this.city = cities;
+			this.distance = new int[n][n];
 
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {

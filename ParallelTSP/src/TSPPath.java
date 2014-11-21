@@ -1,5 +1,13 @@
-import java.io.IOException;
+//******************************************************************************
+//
+// File:    TSPPath.java
+// 
+// This Java source file uses the Parallel Java 2 Library ("PJ2") developed by
+// Prof. Alan Kaminsky (RIT).
+//
+//******************************************************************************
 
+import java.io.IOException;
 import edu.rit.io.InStream;
 import edu.rit.io.OutStream;
 import edu.rit.pj2.Tuple;

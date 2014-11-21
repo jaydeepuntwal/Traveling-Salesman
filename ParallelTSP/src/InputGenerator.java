@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
+import edu.rit.pj2.Task;
 // Test 2
 import edu.rit.pj2.IntVbl;
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
-import edu.rit.pj2.Task;
 
 public class InputGenerator extends Job {
 	

@@ -8,7 +8,7 @@ public class TSPSeq extends Task {
 
 	public void main(String[] args) throws Exception {
 
-		Scanner matrixScanner = new Scanner(new File(args[0]));
+		Scanner matrixScanner = new Scanner(System.in);
 
 		int matrixSize = matrixScanner.nextInt();
 

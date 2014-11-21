@@ -11,6 +11,8 @@ public class TSPSeq extends Task {
 		Scanner matrixScanner = new Scanner(System.in);
 
 		int matrixSize = matrixScanner.nextInt();
+		
+		matrixScanner.nextLine();
 
 		int[][] distance = new int[matrixSize][matrixSize];
 		String[] city = new String[matrixSize];

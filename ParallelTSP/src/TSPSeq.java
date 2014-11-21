@@ -43,7 +43,7 @@ public class TSPSeq extends Task {
 			cost = 0;
 			
 			for (int j = 0; j < matrixSize; j++) {
-				visited[i] = false;
+				visited[j] = false;
 			}
 			
 			// We start from the ith city

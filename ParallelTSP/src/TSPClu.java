@@ -94,6 +94,7 @@ public class TSPClu extends Job {
 		public void readIn(InStream in) throws IOException {
 			n = in.readInt();
 			city = in.readStringArray();
+			distance = new int[n][n];
 
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {

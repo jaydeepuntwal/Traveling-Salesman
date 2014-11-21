@@ -14,6 +14,7 @@ public class TSPPath extends Tuple implements Vbl {
 
 	TSPPath() {
 		this.path = new IntList();
+		this.cost = Integer.MAX_VALUE;
 	}
 
 	TSPPath(int cost, IntList path) {

@@ -25,8 +25,6 @@ public class TSPSeq extends Task {
 			}
 		}
 
-		scan.close();
-
 		int min;
 		int index;
 		boolean[] visited = new boolean[n];

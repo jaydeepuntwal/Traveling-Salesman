@@ -18,7 +18,7 @@ public class TSPClu extends Job {
 		int n = scan.nextInt();
 
 		scan.nextLine();
-		
+
 		String[] city = new String[n];
 		int[][] distance = new int[n][n];
 
@@ -115,6 +115,8 @@ public class TSPClu extends Job {
 
 				@Override
 				public void start() {
+					visited = new boolean[info.n];
+					listOfCities = new IntList();
 					thrPath = threadLocal(bestPath);
 				}
 

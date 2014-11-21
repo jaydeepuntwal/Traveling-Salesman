@@ -16,7 +16,7 @@ public class GoogleMapsAPI {
 			DataInputStream inStream;
 
 			url = new URL(
-					"http://maps.googleapis.com/maps/api/distancematrix/json?origins="
+					"http://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="
 							+ locationA.replaceAll(" ", "%20")
 							+ "&destinations="
 							+ locationB.replaceAll(" ", "%20"));

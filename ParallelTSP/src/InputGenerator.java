@@ -17,6 +17,7 @@ public class InputGenerator extends Task {
 		gapi = new GoogleMapsAPI();
 
 		n = sc.nextInt();
+		
 		distMat = new IntVbl[n][n];
 		final IntVbl distMat[][] = new IntVbl[n][n];
 

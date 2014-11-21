@@ -3,6 +3,7 @@ import java.util.Scanner;
 import edu.rit.pj2.Job;
 import edu.rit.util.IntList;
 
+// Job
 public class TSPSeq extends Job {
 
 	public void main(String[] args) {

@@ -7,8 +7,6 @@ public class TSPSeq extends Task {
 	public void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);
-
-		scan.nextLine();
 		
 		int n = scan.nextInt();
 

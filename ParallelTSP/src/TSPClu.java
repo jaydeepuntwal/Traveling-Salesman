@@ -18,7 +18,7 @@ public class TSPClu extends Job {
 		int n = scan.nextInt();
 
 		scan.nextLine();
-		
+
 		String[] city = new String[n];
 		int[][] distance = new int[n][n];
 
@@ -102,7 +102,7 @@ public class TSPClu extends Job {
 		@Override
 		public void main(String[] args) throws Exception {
 			TSPInformation infoTemplate = new TSPInformation();
-			final TSPInformation info = readTuple(infoTemplate);
+			final TSPInformation info = tryToReadTuple(infoTemplate);
 
 			workerFor().exec(new Loop() {
 
@@ -115,6 +115,8 @@ public class TSPClu extends Job {
 
 				@Override
 				public void start() {
+					visited = new boolean[info.n];
+					listOfCities = new IntList();
 					thrPath = threadLocal(bestPath);
 				}
 

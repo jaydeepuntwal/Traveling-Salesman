@@ -4,7 +4,7 @@ import edu.rit.util.IntList;
 
 public class TSPSeq extends Task {
 
-	public void main(String[] args) throws Exception {
+	public void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);
 
@@ -12,8 +12,8 @@ public class TSPSeq extends Task {
 
 		scan.nextLine();
 
-		int[][] distance = new int[n][n];
 		String[] city = new String[n];
+		int[][] distance = new int[n][n];
 
 		for (int i = 0; i < n; i++) {
 			city[i] = scan.nextLine();

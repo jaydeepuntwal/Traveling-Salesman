@@ -61,7 +61,14 @@ public class TSPClu extends Job {
 		TSPInformation(int n, String[] cities, int[][] distance) {
 			this.n = n;
 			this.city = cities;
-			this.distance = distance;
+			this.distance = new int[n][n];
+
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					this.distance[i][j] = distance[i][j];
+				}
+			}
+
 		}
 
 		/*
@@ -85,6 +92,7 @@ public class TSPClu extends Job {
 		public void readIn(InStream in) throws IOException {
 			n = in.readInt();
 			city = in.readStringArray();
+			distance = new int[n][n];
 
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {

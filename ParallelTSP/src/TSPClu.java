@@ -1,3 +1,12 @@
+//******************************************************************************
+//
+// File:    TSPClu.java
+// 
+// This Java source file uses the Parallel Java 2 Library ("PJ2") developed by
+// Prof. Alan Kaminsky (RIT).
+//
+//******************************************************************************
+
 import java.io.IOException;
 import java.util.Scanner;
 

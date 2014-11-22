@@ -35,8 +35,8 @@ public class InputGenerator extends Job {
 				allCities.add(sc.nextLine());
 			}
 
-			if (n > allCities.size())
-				System.out.println("Number of cities in file is "
+			if (n < 1 || n > allCities.size())
+				System.out.println("Number of cities should be between 1 and "
 						+ allCities.size());
 			cities = new String[n];
 

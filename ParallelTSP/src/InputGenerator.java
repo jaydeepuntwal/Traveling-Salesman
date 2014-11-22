@@ -56,7 +56,18 @@ public class InputGenerator extends Job {
 			parallelFor(0, n - 1).exec(new Loop() {
 
 				public void run(int i) throws Exception {
+
+					int count = 1;
+
 					for (int j = 0; j < n; j++) {
+
+						if (count == 10) {
+							count = 1;
+							Thread.sleep(10000);
+						}
+
+						count++;
+
 						int dist = gapi.getDistance(cities[i], cities[j]);
 						distMat[i][j] = new IntVbl(dist);
 						distMat[j][i] = new IntVbl(dist);

@@ -51,7 +51,7 @@ public class GoogleMapsAPI {
 			return Integer.parseInt(temp);
 
 		} catch (Exception ex) {
-			throw new Exception("Illegal City!");
+			throw new Exception("Illegal City! " + locationA + " OR " + locationB);
 		}
 	}
 }

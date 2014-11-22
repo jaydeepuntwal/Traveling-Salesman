@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import edu.rit.pj2.Task;
 import edu.rit.pj2.IntVbl;
-
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
+import edu.rit.pj2.Task;
+import edu.rit.util.Random;
 
 public class InputGenerator extends Job {
 
@@ -25,6 +25,8 @@ public class InputGenerator extends Job {
 			gapi = new GoogleMapsAPI();
 			n = Integer.parseInt(args[0]);
 
+			Random r = new Random(Long.parseLong(args[1]));
+
 			distMat = new IntVbl[n][n];
 			sc.nextLine();
 
@@ -39,12 +41,10 @@ public class InputGenerator extends Job {
 			cities = new String[n];
 
 			for (int i = 0; i < n; i++) {
-				int randomIndex = ((int) Math.random()) % allCities.size();
+				int randomIndex = (r.nextInt(allCities.size()));
 				cities[i] = allCities.get(randomIndex);
 				allCities.remove(randomIndex);
 			}
-
-	
 
 			sc.close();
 			System.out.println(n);
@@ -55,7 +55,7 @@ public class InputGenerator extends Job {
 
 			parallelFor(0, n - 1).exec(new Loop() {
 
-				public void run(int i) {
+				public void run(int i) throws Exception {
 					for (int j = 0; j < n; j++) {
 						int dist = gapi.getDistance(cities[i], cities[j]);
 						distMat[i][j] = new IntVbl(dist);

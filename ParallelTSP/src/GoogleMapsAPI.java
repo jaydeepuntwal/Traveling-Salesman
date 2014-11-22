@@ -5,11 +5,12 @@ import java.net.URLConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 // KM update
 
 public class GoogleMapsAPI {
 	@SuppressWarnings("deprecation")
-	public int getDistance(String locationA, String locationB) {
+	public int getDistance(String locationA, String locationB) throws Exception {
 
 		try {
 			URL url;
@@ -50,7 +51,7 @@ public class GoogleMapsAPI {
 			return Integer.parseInt(temp);
 
 		} catch (Exception ex) {
-			return 0;
+			throw new Exception("Illegal City!");
 		}
 	}
 }

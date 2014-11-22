@@ -18,6 +18,7 @@ public class InputGenerator extends Job {
 		String cities[];
 		int n;
 		GoogleMapsAPI gapi;
+		IntVbl count;
 
 		public void main(String[] args) {
 
@@ -53,20 +54,26 @@ public class InputGenerator extends Job {
 				System.out.println(cities[i]);
 			}
 
+			count = new IntVbl(0);
+
 			parallelFor(0, n - 1).exec(new Loop() {
+
+				IntVbl thrCount;
+
+				public void start() {
+					thrCount = threadLocal(count);
+				}
 
 				public void run(int i) throws Exception {
 
-					int count = 1;
-
 					for (int j = 0; j < n; j++) {
 
-						if (count == 10) {
-							count = 1;
+						if (thrCount.item == 50) {
+							thrCount.item = 1;
 							Thread.sleep(10000);
 						}
 
-						count++;
+						thrCount.item++;
 
 						int dist = gapi.getDistance(cities[i], cities[j]);
 						distMat[i][j] = new IntVbl(dist);

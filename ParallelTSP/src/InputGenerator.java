@@ -1,20 +1,20 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import edu.rit.pj2.Task;
-// Test 3
 import edu.rit.pj2.IntVbl;
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
 
 public class InputGenerator extends Job {
-	
-	
-	public void main(String args[]){
+
+	public void main(String args[]) {
 		rule().task(InputGen.class).runInJobProcess().args(args);
 	}
-	
-	private static class InputGen extends Task{
+
+	private static class InputGen extends Task {
 		IntVbl distMat[][];
+		String cities[];
 		int n;
 		GoogleMapsAPI gapi;
 
@@ -22,16 +22,27 @@ public class InputGenerator extends Job {
 
 			Scanner sc = new Scanner(System.in);
 			gapi = new GoogleMapsAPI();
+			n = Integer.parseInt(args[0]);
 
-			n = sc.nextInt();
-			
 			distMat = new IntVbl[n][n];
-			final IntVbl distMat[][] = new IntVbl[n][n];
-
-			final String cities[] = new String[n];
-
 			sc.nextLine();
-			
+
+			ArrayList<String> allCities = new ArrayList<String>();
+			while (sc.next() != null) {
+				allCities.add(sc.nextLine());
+			}
+
+			if (n > allCities.size())
+				System.out.println("Number of cities in file is "
+						+ allCities.size());
+			cities = new String[n];
+
+			for (int i = 0; i < n; i++) {
+				int randomIndex = ((int) Math.random()) % allCities.size();
+				cities[i] = allCities.get(randomIndex);
+				allCities.remove(randomIndex);
+			}
+
 			for (int i = 0; i < n; i++) {
 
 				cities[i] = sc.nextLine();
@@ -69,8 +80,5 @@ public class InputGenerator extends Job {
 
 		}
 	}
-	
-	
-	
-	
+
 }

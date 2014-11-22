@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-// KM update
+// KM updat
 
 public class GoogleMapsAPI {
 	@SuppressWarnings("deprecation")
@@ -51,7 +51,7 @@ public class GoogleMapsAPI {
 			return Integer.parseInt(temp);
 
 		} catch (Exception ex) {
-			throw new Exception("Illegal City!");
+			throw new Exception("Illegal City! " + locationA + " OR " + locationB);
 		}
 	}
 }

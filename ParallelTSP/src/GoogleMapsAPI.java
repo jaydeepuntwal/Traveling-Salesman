@@ -5,6 +5,7 @@ import java.net.URLConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+// KM update
 
 public class GoogleMapsAPI {
 	@SuppressWarnings("deprecation")

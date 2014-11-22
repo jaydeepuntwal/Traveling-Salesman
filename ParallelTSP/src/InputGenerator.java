@@ -44,10 +44,7 @@ public class InputGenerator extends Job {
 				allCities.remove(randomIndex);
 			}
 
-			for (int i = 0; i < n; i++) {
-
-				cities[i] = sc.nextLine();
-			}
+	
 
 			sc.close();
 			System.out.println(n);

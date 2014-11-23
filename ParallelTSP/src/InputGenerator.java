@@ -44,7 +44,7 @@ public class InputGenerator extends Job {
 			}
 
 			sc.close();
-			distMat=gapi.getDistance(cities);
+			distMat=gapi.getDistance(cities,"AIzaSyDug4zcmw_tZRZQBcIKv6awK2c718nFKVQ");
 			System.out.println(n);
 	
 			for(String c : cities){

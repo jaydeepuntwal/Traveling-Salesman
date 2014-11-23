@@ -10,7 +10,7 @@ import org.json.simple.parser.JSONParser;
 
 public class GoogleMapsAPI {
 	@SuppressWarnings("deprecation")
-	public int[][] getDistance(String[] locations) throws Exception {
+	public int[][] getDistance(String[] locations, String key) throws Exception {
 
 		URL url;
 		URLConnection urlConnection;
@@ -30,7 +30,7 @@ public class GoogleMapsAPI {
 
 		url = new URL(
 				"http://maps.googleapis.com/maps/api/distancematrix/json?&origins="
-						+ cities + "&destinations=" + cities);
+						+ cities + "&destinations=" + cities + "&key=" + key);
 		urlConnection = url.openConnection();
 		inStream = new DataInputStream(urlConnection.getInputStream());
 
@@ -53,9 +53,9 @@ public class GoogleMapsAPI {
 
 			JSONObject elements = (JSONObject) metrics.get(i);
 			JSONArray em = (JSONArray) elements.get("elements");
-			
+
 			for (int j = 0; j < metrics.size(); j++) {
-				
+
 				JSONObject d = (JSONObject) em.get(j);
 				JSONObject d1 = (JSONObject) d.get("distance");
 

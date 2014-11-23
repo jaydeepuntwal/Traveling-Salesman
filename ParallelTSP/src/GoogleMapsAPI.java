@@ -1,6 +1,10 @@
 import java.io.DataInputStream;
+import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,21 +20,29 @@ public class GoogleMapsAPI {
 		URLConnection urlConnection;
 		DataInputStream inStream;
 
-		String cities = "";
+		StringWriter out = new StringWriter();
+		LinkedHashMap m1 = new LinkedHashMap();
+		JSONObject objwrite = new JSONObject();
+
+		List<String> cities = new LinkedList<String>();
 		int[][] dm = new int[locations.length][locations.length];
 
-		for (int i = 0; i < locations.length; i++) {
-
-			cities += locations[i].replaceAll(" ", "%20");
-
-			if (i != locations.length - 1) {
-				cities += "|";
-			}
+		for (String c : locations) {
+			cities.add(c);
 		}
 
+		m1.put("allToAll", "true");
+
+		objwrite.put("locations", cities);
+		objwrite.put("options", m1);
+
+		objwrite.writeJSONString(out);
+
+		String request = objwrite.toJSONString();
+
 		url = new URL(
-				"https://maps.googleapis.com/maps/api/distancematrix/json?&origins="
-						+ cities + "&destinations=" + cities + "&key=" + key);
+				"http://www.mapquestapi.com/directions/v2/routematrix?&key="
+						+ key + "&json=" + request);
 
 		urlConnection = url.openConnection();
 		inStream = new DataInputStream(urlConnection.getInputStream());

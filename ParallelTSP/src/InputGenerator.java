@@ -28,9 +28,11 @@ public class InputGenerator extends Job {
 			sc.nextLine();
 
 			ArrayList<String> allCities = new ArrayList<String>();
-
+			int count = 0;
 			while (sc.hasNext()) {
-
+				if (count == 20)
+					break;
+				count++;
 				allCities.add(sc.nextLine());
 			}
 
@@ -47,7 +49,7 @@ public class InputGenerator extends Job {
 
 			sc.close();
 			distMat = gapi.getDistance(cities,
-					"AIzaSyDug4zcmw_tZRZQBcIKv6awK2c718nFKVQ");
+					"Fmjtd%7Cluurn90b2u%2Cal%3Do5-9wtnu6");
 			System.out.println(n);
 
 			for (String c : cities) {

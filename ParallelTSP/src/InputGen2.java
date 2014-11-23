@@ -8,6 +8,7 @@ public class InputGen2 {
 		int distMat[][] = new int[n][n];
 		Random r = new Random(Long.parseLong(args[1]));
 		System.out.println(n);
+		//
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 

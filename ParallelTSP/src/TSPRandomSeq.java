@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import edu.rit.pj2.Job;
@@ -37,7 +38,7 @@ public class TSPRandomSeq extends Job {
 			int minDist = Integer.MAX_VALUE;
 			int randomValues[] = new int[n];
 			int finalValues[] = new int[n];
-
+			ArrayList<Integer> sums = new ArrayList<Integer>();
 			for (int i = 0; i < n; i++) {
 				randomValues[i] = i;
 			}
@@ -49,6 +50,8 @@ public class TSPRandomSeq extends Job {
 				}
 				if (sum < minDist) {
 					minDist = sum;
+					sums.add(sum);
+
 					System.arraycopy(randomValues, 0, finalValues, 0, n);
 				}
 				arrayShuffle(randomValues, Long.parseLong(args[1]));
@@ -61,7 +64,8 @@ public class TSPRandomSeq extends Job {
 					System.out.print(city[finalValues[i]]);
 			}
 			System.out.println("\nTotal distance :" + minDist);
-
+			System.out.println(sums);
+			System.out.println(sums.size());
 		}
 
 		public void arrayShuffle(int[] arr, long R) {

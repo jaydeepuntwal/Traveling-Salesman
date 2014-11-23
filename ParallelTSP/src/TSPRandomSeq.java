@@ -35,15 +35,15 @@ public class TSPRandomSeq extends Job {
 
 			scan.close();
 			int T = Integer.parseInt(args[0]);
-			int minDist = Integer.MAX_VALUE;
+			long minDist = Long.MAX_VALUE;
 			int randomValues[] = new int[n];
 			int finalValues[] = new int[n];
-			ArrayList<Integer> sums = new ArrayList<Integer>();
+			ArrayList<Long> sums = new ArrayList<Long>();
 			for (int i = 0; i < n; i++) {
 				randomValues[i] = i;
 			}
 			for (int i = 0; i < T; i++) {
-				int sum = 0;
+				long sum = 0;
 
 				for (int j = 1; j < n; j++) {
 					sum += distance[randomValues[0]][randomValues[j]];

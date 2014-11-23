@@ -31,6 +31,9 @@ public class GoogleMapsAPI {
 		url = new URL(
 				"http://maps.googleapis.com/maps/api/distancematrix/json?&origins="
 						+ cities + "&destinations=" + cities + "&key=" + key);
+		
+		System.out.println(url);
+		
 		urlConnection = url.openConnection();
 		inStream = new DataInputStream(urlConnection.getInputStream());
 

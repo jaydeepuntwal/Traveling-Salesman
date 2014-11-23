@@ -29,7 +29,7 @@ public class GoogleMapsAPI {
 		}
 
 		url = new URL(
-				"http://maps.googleapis.com/maps/api/distancematrix/json?&origins="
+				"https://maps.googleapis.com/maps/api/distancematrix/json?&origins="
 						+ cities + "&destinations=" + cities + "&key=" + key);
 
 		urlConnection = url.openConnection();

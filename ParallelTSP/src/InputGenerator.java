@@ -28,7 +28,9 @@ public class InputGenerator extends Job {
 			sc.nextLine();
 
 			ArrayList<String> allCities = new ArrayList<String>();
+
 			while (sc.hasNext()) {
+
 				allCities.add(sc.nextLine());
 			}
 
@@ -44,14 +46,14 @@ public class InputGenerator extends Job {
 			}
 
 			sc.close();
-			distMat=gapi.getDistance(cities,"AIzaSyDug4zcmw_tZRZQBcIKv6awK2c718nFKVQ");
+			distMat = gapi.getDistance(cities,
+					"AIzaSyDug4zcmw_tZRZQBcIKv6awK2c718nFKVQ");
 			System.out.println(n);
-	
-			for(String c : cities){
+
+			for (String c : cities) {
 				System.out.println(c);
 			}
-			
-			
+
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
 
@@ -62,7 +64,6 @@ public class InputGenerator extends Job {
 				if (i != n - 1)
 					System.out.println();
 			}
-			
 
 		}
 	}

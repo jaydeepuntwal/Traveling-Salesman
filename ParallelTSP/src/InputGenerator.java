@@ -1,9 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import edu.rit.pj2.IntVbl;
 import edu.rit.pj2.Job;
-import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;
 import edu.rit.util.Random;
 
@@ -49,6 +47,11 @@ public class InputGenerator extends Job {
 			distMat=gapi.getDistance(cities);
 			System.out.println(n);
 	
+			for(String c : cities){
+				System.out.println(c);
+			}
+			
+			
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
 

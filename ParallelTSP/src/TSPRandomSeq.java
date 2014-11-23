@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Task;
-import edu.rit.util.Random;
+import java.util.Random;
 
 public class TSPRandomSeq extends Job {
 
@@ -57,7 +57,7 @@ public class TSPRandomSeq extends Job {
 
 					System.arraycopy(randomValues, 0, finalValues, 0, n);
 				}
-				arrayShuffle(randomValues, Long.parseLong(args[1]));
+				arrayShuffle(randomValues);//, Long.parseLong(args[1]));
 			}
 
 			for (int i = 0; i < n; i++) {
@@ -71,9 +71,9 @@ public class TSPRandomSeq extends Job {
 			System.out.println(sums.size());
 		}
 
-		public void arrayShuffle(int[] arr, long R) {
+		public void arrayShuffle(int[] arr) {
 			int indexRandom, temp;
-			Random random = new Random(R);
+			Random random = new Random();
 			for (int i = arr.length - 1; i > 0; i--) {
 				indexRandom = random.nextInt(i + 1);
 				temp = arr[indexRandom];

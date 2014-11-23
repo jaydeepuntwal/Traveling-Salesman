@@ -51,9 +51,11 @@ public class GoogleMapsAPI {
 
 		for (int i = 0; i < locations.length; i++) {
 
+			JSONObject elements = (JSONObject) metrics.get(i);
+			JSONArray em = (JSONArray) elements.get("elements");
+			
 			for (int j = 0; j < locations.length; j++) {
-				JSONObject elements = (JSONObject) metrics.get(i);
-				JSONArray em = (JSONArray) elements.get("elements");
+				
 				JSONObject d = (JSONObject) em.get(j);
 				JSONObject d1 = (JSONObject) d.get("distance");
 

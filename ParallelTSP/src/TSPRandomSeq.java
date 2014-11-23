@@ -47,6 +47,9 @@ public class TSPRandomSeq extends Job {
 
 				for (int j = 1; j < n; j++) {
 					sum += distance[randomValues[0]][randomValues[j]];
+					if(j==n-1)
+						sum += distance[randomValues[j]][randomValues[0]];
+
 				}
 				if (sum < minDist) {
 					minDist = sum;
@@ -58,11 +61,11 @@ public class TSPRandomSeq extends Job {
 			}
 
 			for (int i = 0; i < n; i++) {
-				if (i != n - 1)
 					System.out.print(city[finalValues[i]] + " --> ");
-				else
-					System.out.print(city[finalValues[i]]);
+				
 			}
+			System.out.print(city[finalValues[0]]);
+
 			System.out.println("\nTotal distance :" + minDist);
 			System.out.println(sums);
 			System.out.println(sums.size());

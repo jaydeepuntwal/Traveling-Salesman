@@ -1,7 +1,6 @@
 import java.io.DataInputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Iterator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -51,35 +50,21 @@ public class GoogleMapsAPI {
 		JSONObject jsonObject = (JSONObject) obj;
 		JSONArray metrics = (JSONArray) jsonObject.get("rows");
 
+		for (int i = 0; i < locations.length; i++) {
 
-		Iterator iter = metrics.iterator();
-		int i=0;
-		int j =0;
-		
-		while(iter.hasNext()){
-			
-			JSONObject elements = (JSONObject) iter.next();
+			JSONObject elements = (JSONObject) metrics.get(i);
 			JSONArray em = (JSONArray) elements.get("elements");
-			
-			
-			Iterator iter2 = em.iterator();
-			
-			while(iter2.hasNext()){
-				JSONObject d = (JSONObject) iter2.next();
+
+			for (int j = 0; j < locations.length; j++) {
+
+				JSONObject d = (JSONObject) em.get(j);
 				JSONObject d1 = (JSONObject) d.get("distance");
 
 				Object[] arr = d1.values().toArray();
 
 				dm[i][j] = Integer.parseInt(arr[1].toString());
-				
-				j++;
-				
 			}
-			
-			i++;
-			
-			
-			
+
 		}
 
 		return dm;

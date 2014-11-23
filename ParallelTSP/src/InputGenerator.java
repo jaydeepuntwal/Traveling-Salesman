@@ -62,6 +62,7 @@ public class InputGenerator extends Job {
 				if (i != n - 1)
 					System.out.println();
 			}
+			
 
 		}
 	}

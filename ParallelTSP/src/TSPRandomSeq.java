@@ -10,7 +10,6 @@ public class TSPRandomSeq extends Job {
 		rule().task(TSPRandomSequential.class).runInJobProcess().args(args);
 	}
 
-	//
 	public static class TSPRandomSequential extends Task {
 		public void main(String args[]) {
 
@@ -46,13 +45,13 @@ public class TSPRandomSeq extends Job {
 				int sum = 0;
 
 				for (int j = 1; j < n; j++) {
-					sum += distance[0][randomValues[j]];
+					sum += distance[randomValues[0]][randomValues[j]];
 				}
 				if (sum < minDist) {
 					minDist = sum;
-					finalValues = randomValues;
+					System.arraycopy(randomValues, 0, finalValues, 0, n);
 				}
-				arrayShuffle(randomValues, Integer.parseInt(args[1]));
+				arrayShuffle(randomValues, Long.parseLong(args[1]));
 			}
 
 			for (int i = 0; i < n; i++) {
@@ -61,11 +60,11 @@ public class TSPRandomSeq extends Job {
 				else
 					System.out.print(city[finalValues[i]]);
 			}
-			System.out.println("\nTotal distance :"+minDist);
+			System.out.println("\nTotal distance :" + minDist);
 
 		}
 
-		public void arrayShuffle(int[] arr, int R) {
+		public void arrayShuffle(int[] arr, long R) {
 			int indexRandom, temp;
 			Random random = new Random(R);
 			for (int i = arr.length - 1; i > 0; i--) {

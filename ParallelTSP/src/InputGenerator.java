@@ -28,11 +28,7 @@ public class InputGenerator extends Job {
 			sc.nextLine();
 
 			ArrayList<String> allCities = new ArrayList<String>();
-			int count = 0;
 			while (sc.hasNext()) {
-				if (count == 20)
-					break;
-				count++;
 				allCities.add(sc.nextLine());
 			}
 

@@ -14,13 +14,12 @@ public class InputGenerator extends Job {
 	}
 
 	private static class InputGen extends Task {
-		IntVbl distMat[][];
+		int distMat[][];
 		String cities[];
 		int n;
 		GoogleMapsAPI gapi;
-		IntVbl count;
 
-		public void main(String[] args) {
+		public void main(String[] args) throws Exception {
 
 			Scanner sc = new Scanner(System.in);
 			gapi = new GoogleMapsAPI();
@@ -28,7 +27,6 @@ public class InputGenerator extends Job {
 
 			Random r = new Random(Long.parseLong(args[1]));
 
-			distMat = new IntVbl[n][n];
 			sc.nextLine();
 
 			ArrayList<String> allCities = new ArrayList<String>();
@@ -48,46 +46,13 @@ public class InputGenerator extends Job {
 			}
 
 			sc.close();
+			distMat=gapi.getDistance(cities);
 			System.out.println(n);
-			for (int i = 0; i < n; i++) {
-
-				System.out.println(cities[i]);
-			}
-
-			count = new IntVbl(0);
-
-			parallelFor(0, n - 1).exec(new Loop() {
-
-				IntVbl thrCount;
-
-				public void start() {
-					thrCount = threadLocal(count);
-				}
-
-				public void run(int i) throws Exception {
-
-					for (int j = 0; j < n; j++) {
-
-						if (thrCount.item == 50) {
-							thrCount.item = 1;
-							Thread.sleep(10000);
-						}
-
-						thrCount.item++;
-
-						int dist = gapi.getDistance(cities[i], cities[j]);
-						distMat[i][j] = new IntVbl(dist);
-						distMat[j][i] = new IntVbl(dist);
-
-					}
-				}
-			});
-			//
-
+	
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
 
-					System.out.print(distMat[i][j].item);
+					System.out.print(distMat[i][j]);
 					if (j != n - 1)
 						System.out.print(" ");
 				}

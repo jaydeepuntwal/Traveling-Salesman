@@ -10,48 +10,61 @@ import org.json.simple.parser.JSONParser;
 
 public class GoogleMapsAPI {
 	@SuppressWarnings("deprecation")
-	public int getDistance(String locationA, String locationB) throws Exception {
+	public int[][] getDistance(String[] locations) throws Exception {
 
-		try {
-			URL url;
-			URLConnection urlConnection;
-			DataInputStream inStream;
+		URL url;
+		URLConnection urlConnection;
+		DataInputStream inStream;
 
-			url = new URL(
-					"http://maps.googleapis.com/maps/api/distancematrix/json?&origins="
-							+ locationA.replaceAll(" ", "%20")
-							+ "&destinations="
-							+ locationB.replaceAll(" ", "%20"));
-			urlConnection = url.openConnection();
-			inStream = new DataInputStream(urlConnection.getInputStream());
+		String cities = "";
+		int[][] dm = new int[locations.length][locations.length];
 
-			String buffer;
-			String json = "";
-			while ((buffer = inStream.readLine()) != null) {
-				json += buffer;
+		for (int i = 0; i < locations.length; i++) {
+
+			cities += locations[i].replaceAll(" ", "%20");
+
+			if (i != locations.length - 1) {
+				cities += "|";
+			}
+		}
+
+		url = new URL(
+				"http://maps.googleapis.com/maps/api/distancematrix/json?&origins="
+						+ cities + "&destinations=" + cities);
+		urlConnection = url.openConnection();
+		inStream = new DataInputStream(urlConnection.getInputStream());
+
+		String buffer;
+		String json = "";
+		while ((buffer = inStream.readLine()) != null) {
+			json += buffer;
+		}
+
+		json = json.trim();
+		inStream.close();
+
+		JSONParser parser = new JSONParser();
+
+		Object obj = parser.parse(json);
+		JSONObject jsonObject = (JSONObject) obj;
+		JSONArray metrics = (JSONArray) jsonObject.get("rows");
+
+		for (int i = 0; i < locations.length; i++) {
+
+			for (int j = 0; j < locations.length; j++) {
+				JSONObject elements = (JSONObject) metrics.get(i);
+				JSONArray em = (JSONArray) elements.get("elements");
+				JSONObject d = (JSONObject) em.get(j);
+				JSONObject d1 = (JSONObject) d.get("distance");
+
+				Object[] arr = d1.values().toArray();
+
+				dm[i][j] = Integer.parseInt(arr[1].toString());
 			}
 
-			json = json.trim();
-			inStream.close();
-
-			JSONParser parser = new JSONParser();
-
-			Object obj = parser.parse(json);
-			JSONObject jsonObject = (JSONObject) obj;
-			JSONArray metrics = (JSONArray) jsonObject.get("rows");
-			JSONObject elements = (JSONObject) metrics.get(0);
-			JSONArray em = (JSONArray) elements.get("elements");
-			JSONObject d = (JSONObject) em.get(0);
-			JSONObject d1 = (JSONObject) d.get("distance");
-
-			Object[] arr = d1.values().toArray();
-
-			String temp = arr[1].toString();
-
-			return Integer.parseInt(temp);
-
-		} catch (Exception ex) {
-			throw new Exception("Illegal City! " + locationA + " OR " + locationB);
 		}
+
+		return dm;
+
 	}
 }

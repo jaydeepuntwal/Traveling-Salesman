@@ -41,23 +41,17 @@ public class TSPRandomSeq extends Job {
 			long T = Long.parseLong(args[0]);
 			long seed = Long.parseLong(args[1]);
 
-			randomCreateList(initial.path, seed);
+			shuffleList(initial.path, seed);
 			initial = new TSPPath(getDistance(initial.path, distance),
 					initial.path);
 
-			Random prng = new Random(seed);
-
 			for (long i = 0; i < T; i++) {
-
 				TSPPath candidate = initial.clone();
-				int p = prng.nextInt(n);
-				int q = prng.nextInt(n);
-				candidate.path.swap(p, q);
+				shuffleList(candidate.path, seed);
 				candidate.cost = getDistance(candidate.path, distance);
 				initial.reduce(candidate);
-
 			}
-			
+
 			initial.path.addLast(initial.path.get(0));
 
 			// Display results
@@ -86,7 +80,7 @@ public class TSPRandomSeq extends Job {
 			return dist;
 		}
 
-		public static void randomCreateList(IntList initial, long seed) {
+		public static void shuffleList(IntList initial, long seed) {
 
 			Random r = new Random(seed);
 

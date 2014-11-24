@@ -1,9 +1,9 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Task;
-import java.util.Random;
+import edu.rit.util.IntList;
+import edu.rit.util.Random;
 
 public class TSPRandomSeq extends Job {
 
@@ -23,7 +23,10 @@ public class TSPRandomSeq extends Job {
 			String[] city = new String[n];
 			int[][] distance = new int[n][n];
 
+			TSPPath initial = new TSPPath();
+
 			for (int i = 0; i < n; i++) {
+				initial.path.addLast(i);
 				city[i] = scan.nextLine();
 			}
 
@@ -34,52 +37,62 @@ public class TSPRandomSeq extends Job {
 			}
 
 			scan.close();
-			int T = Integer.parseInt(args[0]);
-			long minDist = Long.MAX_VALUE;
-			int randomValues[] = new int[n];
-			int finalValues[] = new int[n];
-			ArrayList<Long> sums = new ArrayList<Long>();
-			for (int i = 0; i < n; i++) {
-				randomValues[i] = i;
-			}
-			for (int i = 0; i < T; i++) {
-				long sum = 0;
 
-				for (int j = 1; j < n; j++) {
-					sum += distance[randomValues[0]][randomValues[j]];
-					if(j==n-1)
-						sum += distance[randomValues[j]][randomValues[0]];
+			long T = Long.parseLong(args[0]);
+			long seed = Long.parseLong(args[1]);
 
-				}
-				if (sum < minDist) {
-					minDist = sum;
-					sums.add(sum);
+			randomCreateList(initial.path, seed);
+			initial = new TSPPath(getDistance(initial.path, distance),
+					initial.path);
 
-					System.arraycopy(randomValues, 0, finalValues, 0, n);
-				}
-				arrayShuffle(randomValues);//, Long.parseLong(args[1]));
+			Random prng = new Random(seed);
+
+			for (long i = 0; i < T; i++) {
+
+				TSPPath candidate = initial.clone();
+				int p = prng.nextInt(n);
+				int q = prng.nextInt(n);
+				candidate.path.swap(p, q);
+				candidate.cost = getDistance(candidate.path, distance);
+				initial.reduce(candidate);
+
 			}
 
-			for (int i = 0; i < n; i++) {
-					System.out.print(city[finalValues[i]] + " --> ");
-				
+			// Display results
+			while (!initial.path.isEmpty()) {
+				if (initial.path.size() != 1)
+					System.out
+							.print(city[initial.path.removeFirst()] + " --> ");
+				else
+					System.out.println(city[initial.path.removeFirst()]);
 			}
-			System.out.print(city[finalValues[0]]);
 
-			System.out.println("\nTotal distance :" + minDist);
-			System.out.println(sums);
-			System.out.println(sums.size());
+			System.out.println("Total Cost: " + initial.cost / 1000 + " Km.");
+
 		}
 
-		public void arrayShuffle(int[] arr) {
-			int indexRandom, temp;
-			Random random = new Random();
-			for (int i = arr.length - 1; i > 0; i--) {
-				indexRandom = random.nextInt(i + 1);
-				temp = arr[indexRandom];
-				arr[indexRandom] = arr[i];
-				arr[i] = temp;
+		public static int getDistance(IntList path, int[][] distance) {
+
+			int dist = 0;
+
+			for (int i = 0; i < path.size() - 1; i++) {
+				dist += distance[path.get(i)][path.get(i + 1)];
 			}
+
+			dist += distance[path.get(path.size() - 1)][path.get(0)];
+
+			return dist;
+		}
+
+		public static void randomCreateList(IntList initial, long seed) {
+
+			Random r = new Random(seed);
+
+			for (int i = initial.size() - 1; i >= 0; --i) {
+				int j = r.nextInt(i);// random between 0 and i
+				initial.swap(i, j);
+			}
+
 		}
 	}
 

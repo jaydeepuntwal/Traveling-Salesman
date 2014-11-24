@@ -57,6 +57,8 @@ public class TSPRandomSeq extends Job {
 				initial.reduce(candidate);
 
 			}
+			
+			initial.path.addLast(initial.path.get(0));
 
 			// Display results
 			while (!initial.path.isEmpty()) {

@@ -40,14 +40,65 @@ public class TSPRandomSeq extends Job {
 
 			long T = Long.parseLong(args[0]);
 			long seed = Long.parseLong(args[1]);
+			Random prng = new Random(seed);
 
-			shuffleList(initial.path, seed);
-			initial = new TSPPath(getDistance(initial.path, distance),
-					initial.path);
+			int min;
+			int index;
+			boolean[] visited = new boolean[n];
+			IntList listOfCities;
+			TSPPath tspPath = new TSPPath();
+			int cost;
+			int lastCity;
+
+			// Determines the first city from where the path is to be started
+			for (int i = 0; i < n; i++) {
+
+				// Initialize the cost to zero for a new path
+				cost = 0;
+
+				for (int j = 0; j < n; j++) {
+					visited[j] = false;
+				}
+
+				// We start from the ith city
+				visited[i] = true;
+
+				// Initialize the list
+				listOfCities = new IntList();
+
+				// Add the first city to the list
+				listOfCities.addLast(i);
+
+				while (listOfCities.size() != n) {
+					min = Integer.MAX_VALUE;
+					lastCity = listOfCities.get(listOfCities.size() - 1);
+					index = -1;
+					for (int j = 0; j < n; j++) {
+						if ((distance[lastCity][j] < min) && (!visited[j])) {
+							min = distance[lastCity][j];
+							index = j;
+						}
+					}
+
+					cost += min;
+					visited[index] = true;
+					listOfCities.addLast(index);
+				}
+
+				cost += distance[listOfCities.get(listOfCities.size() - 1)][i];
+				listOfCities.addLast(i);
+
+				tspPath.reduce(new TSPPath(cost, listOfCities));
+			}
 
 			for (long i = 0; i < T; i++) {
-				TSPPath candidate = initial.clone();
-				shuffleList(candidate.path, seed);
+				TSPPath candidate = tspPath.clone();
+
+				int p = prng.nextInt(candidate.path.size());
+				int q = prng.nextInt(candidate.path.size());
+
+				candidate.path.swap(p, q);
+
 				candidate.cost = getDistance(candidate.path, distance);
 				initial.reduce(candidate);
 			}
@@ -78,17 +129,6 @@ public class TSPRandomSeq extends Job {
 			dist += distance[path.get(path.size() - 1)][path.get(0)];
 
 			return dist;
-		}
-
-		public static void shuffleList(IntList initial, long seed) {
-
-			Random r = new Random(seed);
-
-			for (int i = initial.size() - 1; i > 0; --i) {
-				int j = r.nextInt(i);// random between 0 and i
-				initial.swap(i, j);
-			}
-
 		}
 	}
 

@@ -88,7 +88,7 @@ public class TSPRandomSeq extends Job {
 
 			Random r = new Random(seed);
 
-			for (int i = initial.size() - 1; i >= 0; --i) {
+			for (int i = initial.size() - 1; i > 0; --i) {
 				int j = r.nextInt(i);// random between 0 and i
 				initial.swap(i, j);
 			}

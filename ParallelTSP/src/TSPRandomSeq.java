@@ -63,7 +63,7 @@ public class TSPRandomSeq extends Job {
 					System.out.println(city[initial.path.removeFirst()]);
 			}
 
-			System.out.println("Total Cost: " + initial.cost / 1000 + " Km.");
+			System.out.println("Total Cost: " + initial.cost + " Km.");
 
 		}
 

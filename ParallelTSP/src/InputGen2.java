@@ -13,7 +13,7 @@ public class InputGen2 {
 			for (int j = 0; j < n; j++) {
 
 				if (i != j && distMat[i][j] == 0) {
-					int rNo = r.nextInt(20000000) + 1700000;
+					int rNo = r.nextInt(20000) + 1700;
 					distMat[i][j] = rNo;
 					distMat[j][i] = rNo;
 				}

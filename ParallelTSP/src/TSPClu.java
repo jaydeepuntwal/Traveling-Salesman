@@ -224,7 +224,7 @@ public class TSPClu extends Job {
 					System.out.println(info.city[bestTT.path.removeFirst()]);
 			}
 
-			System.out.println("Total Cost: " + bestTT.cost/1000 + " Km.");
+			System.out.println("Total Cost: " + bestTT.cost + " Km.");
 
 		}
 

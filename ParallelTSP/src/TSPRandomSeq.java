@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 import edu.rit.pj2.Job;
@@ -93,12 +96,7 @@ public class TSPRandomSeq extends Job {
 
 			for (long i = 0; i < T; i++) {
 				TSPPath candidate = tspPath.clone();
-
-				int p = prng.nextInt(candidate.path.size());
-				int q = prng.nextInt(candidate.path.size());
-
-				candidate.path.swap(p, q);
-
+				shuffle(candidate);
 				candidate.cost = getDistance(candidate.path, distance);
 				initial.reduce(candidate);
 			}
@@ -115,6 +113,20 @@ public class TSPRandomSeq extends Job {
 			}
 
 			System.out.println("Total Cost: " + initial.cost + " Km.");
+
+		}
+
+		private void shuffle(TSPPath candidate) {
+			List<Integer> path = new ArrayList<Integer>();
+			for (int i = 0; i < candidate.path.size(); i++) {
+				path.add(candidate.path.get(i));
+			}
+			candidate.path.clear();
+			Collections.shuffle(path);
+
+			for (Integer i : path) {
+				candidate.path.addLast(i);
+			}
 
 		}
 

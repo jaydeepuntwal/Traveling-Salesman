@@ -27,35 +27,6 @@ import edu.rit.util.Random;
 public class TSPSeq extends Task {
 
 	/**
-	 * Shuffle a tour
-	 * 
-	 * @param candidate
-	 *            Tour
-	 * @param cities
-	 * @param seed
-	 */
-	private void shuffle(TSPPath candidate, City[] cities, long seed) {
-		IntList candidateList = candidate.getPath();
-		Random random = new Random(seed);
-		for (int i = candidateList.size() - 1; i > 0; i--) {
-			int indexRandom = random.nextInt(i + 1);
-			candidateList.swap(i, indexRandom);
-		}
-
-		double dist = 0;
-
-		for (int i = 0; i < candidateList.size() - 1; i++) {
-			dist += cities[candidateList.get(i)].distance(cities[candidateList
-					.get(i + 1)]);
-		}
-
-		dist += cities[candidateList.get(candidateList.size() - 1)]
-				.distance(cities[candidateList.get(0)]);
-
-		candidate = new TSPPath(dist, candidateList);
-	}
-
-	/**
 	 * Main
 	 */
 	public void main(String args[]) {
@@ -171,7 +142,7 @@ public class TSPSeq extends Task {
 		int N = 0;
 		try {
 			N = Integer.parseInt(temp[0]);
-			Long.parseLong(temp[2]);
+			Long.parseLong(temp[1]);
 		} catch (NumberFormatException e) {
 			usage(e.getMessage());
 		}

@@ -7,8 +7,6 @@
 //
 //******************************************************************************
 
-import java.util.BitSet;
-
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;

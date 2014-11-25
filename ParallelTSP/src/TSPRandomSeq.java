@@ -112,9 +112,9 @@ public class TSPRandomSeq extends Task {
 
 	}
 
-	public static int getDistance(IntList path, City[] cities) {
+	public static double getDistance(IntList path, City[] cities) {
 
-		int dist = 0;
+		double dist = 0;
 
 		for (int i = 0; i < path.size() - 1; i++) {
 			dist += cities[path.get(i)].distance(cities[path.get(i + 1)]);

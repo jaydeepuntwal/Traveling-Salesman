@@ -94,7 +94,7 @@ public class TSPRandomSeq extends Task {
 				System.out.println(cities[tspPath.path.removeFirst()].id);
 		}
 
-		System.out.println("Total Cost: " + tspPath.cost + " Km.");
+		System.out.printf("Total Cost: %.3f%n Km", tspPath.cost);
 
 	}
 

@@ -76,7 +76,7 @@ public class TSPRandomClu extends Job {
 
 				@Override
 				public void start() {
-					visited = new BitSet(N);
+					//visited = new BitSet(N);
 					listOfCities = new IntList();
 					thrPath = threadLocal(bestPath);
 				}
@@ -87,6 +87,8 @@ public class TSPRandomClu extends Job {
 					// Initialize the cost to zero for a new path
 					cost = 0;
 
+					visited = new BitSet(N);
+					
 					// We start from the ith city
 					visited.set(i);
 

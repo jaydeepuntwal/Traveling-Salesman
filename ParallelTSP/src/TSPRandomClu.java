@@ -8,6 +8,7 @@
 //******************************************************************************
 
 import java.util.BitSet;
+
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;
@@ -21,15 +22,15 @@ public class TSPRandomClu extends Job {
 		// Input
 		int N = Integer.parseInt(args[0]);
 		long T = Long.parseLong(args[1]);
-		long seed = Long.parseLong(args[2]);
 
 		int K = workers();
 		if (K == DEFAULT_WORKERS) {
 			K = 1;
 		}
 
-		masterFor(0, N - 1, TSPWorkerTask.class)
-				.args(args[0], args[1], args[2]);
+		T = T / K;
+
+		masterFor(0, N - 1, TSPWorkerTask.class).args(args[0], "" + T, args[2]);
 
 		// Set up Final task.
 		rule().atFinish().task(TSPReduceTask.class).args("" + K)
@@ -40,6 +41,28 @@ public class TSPRandomClu extends Job {
 
 		TSPPath bestPath;
 		City[] cities;
+
+		private void shuffle(TSPPath candidate, long seed) {
+			Random random = new Random(seed);
+			for (int i = candidate.path.size() - 1; i > 0; i--) {
+				int indexRandom = random.nextInt(i + 1);
+				candidate.path.swap(i, indexRandom);
+			}
+		}
+
+		public static double getDistance(IntList path, City[] cities) {
+
+			double dist = 0;
+
+			for (int i = 0; i < path.size() - 1; i++) {
+				dist += cities[path.get(i)].distance(cities[path.get(i + 1)]);
+			}
+
+			dist += cities[path.get(path.size() - 1)].distance(cities[path
+					.get(0)]);
+
+			return dist;
+		}
 
 		@Override
 		public void main(String[] args) throws Exception {
@@ -121,6 +144,13 @@ public class TSPRandomClu extends Job {
 				}
 
 			});
+
+			for (long i = 0; i < T; i++) {
+				TSPPath candidate = bestPath.clone();
+				shuffle(candidate, seed);
+				candidate.cost = getDistance(candidate.path, cities);
+				bestPath.reduce(candidate);
+			}
 
 			bestPath.rank = taskRank();
 			putTuple(bestPath);

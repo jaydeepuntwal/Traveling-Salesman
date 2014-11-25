@@ -7,6 +7,7 @@
 //
 //******************************************************************************
 
+import java.util.BitSet;
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;
@@ -15,11 +16,15 @@ import edu.rit.util.Random;
 
 /**
  * Class TSPRandomClu is a cluster parallel program that searches a minimum cost
- * path for given list of cities using Heuristic Search
+ * path for given list of cities using Nearest Neighbor Algorithm
  * 
- * It divides T iterations to partitions and each partition is given to a worker
- * task, where it shuffles the tour in parallel on multiple threads in hope of
- * searching a minimum cost path. If found, it reduces it to the best path.
+ * Nearest Neighbor (NN) Algorithm starts with each of N cities and recursively
+ * travel to next minimum city. The minimum of all is selected
+ * 
+ * It divides (N - 1) cities into chunks and each chunk is given to a cluster
+ * node, where it searches for a optimal path from every starting city in its
+ * chunk in parallel on multiple threads. If found, it reduces it to the best
+ * path.
  * 
  * Worker then puts a tuple in tuple space for the reducer task.
  * 
@@ -27,12 +32,12 @@ import edu.rit.util.Random;
  * prints the best path
  * 
  * Usage:
- * <TT>java pj2 workers=<I>K</I> TSPRandomClu <I>N</I> <I>T</I> <I>Seed</I>...</TT>
+ * <TT>java pj2 workers=<I>K</I> TSPRandomClu <I>N</I> <I>Seed</I>...</TT>
  * 
  * @author Jaydeep Untwal, Sushil Mohite, Harsh Sadhvani
  * @version 25-Nov-2014
  */
-public class TSPRandomClu extends Job {
+public class TSPClu extends Job {
 
 	/**
 	 * Main
@@ -44,7 +49,6 @@ public class TSPRandomClu extends Job {
 
 		// Input
 		int N = Integer.parseInt(args[0]);
-		long T = Long.parseLong(args[1]);
 
 		// Number of workers
 		int K = workers();
@@ -52,7 +56,7 @@ public class TSPRandomClu extends Job {
 			K = 1;
 		}
 
-		masterFor(0, T, TSPWorkerTask.class).args(args[0], args[2]);
+		masterFor(0, N - 1, TSPWorkerTask.class).args(args[0], args[1]);
 
 		// Set up Final task.
 		rule().atFinish().task(TSPReduceTask.class).args("" + K)
@@ -84,17 +88,6 @@ public class TSPRandomClu extends Job {
 				candidateList.swap(i, indexRandom);
 			}
 
-			candidate = new TSPPath(getDistance(candidateList), candidateList);
-		}
-
-		/**
-		 * Return the total distance of the tour
-		 * 
-		 * @param candidateList
-		 *            Tour
-		 * @return double total distance
-		 */
-		private double getDistance(IntList candidateList) {
 			double dist = 0;
 
 			for (int i = 0; i < candidateList.size() - 1; i++) {
@@ -105,7 +98,7 @@ public class TSPRandomClu extends Job {
 			dist += cities[candidateList.get(candidateList.size() - 1)]
 					.distance(cities[candidateList.get(0)]);
 
-			return dist;
+			candidate = new TSPPath(dist, candidateList);
 		}
 
 		/**
@@ -119,8 +112,6 @@ public class TSPRandomClu extends Job {
 			final long seed = Long.parseLong(args[1]);
 			Random prng = new Random(seed);
 
-			IntList initial = new IntList();
-
 			// Generate Cities
 			cities = new City[N];
 
@@ -128,23 +119,67 @@ public class TSPRandomClu extends Job {
 				double x = prng.nextDouble() * 100;
 				double y = prng.nextDouble() * 100;
 				cities[i] = new City(x, y);
-				initial.addLast(i);
 			}
 
-			bestPath = new TSPPath(getDistance(initial), initial);
+			// Nearest Neighbor
+
+			bestPath = new TSPPath();
 
 			workerFor().exec(new Loop() {
 
-				TSPPath thrPath;
+				double min;
+				int index;
+				BitSet visited;
+				IntList listOfCities;
+				TSPPath tspPath;
+				double cost;
+				int lastCity;
 
+				@Override
 				public void start() {
-					thrPath = threadLocal(bestPath);
+					tspPath = threadLocal(bestPath);
 				}
 
-				public void run(int i) {
-					TSPPath candidate = bestPath.clone();
-					shuffle(candidate, cities, seed);
-					thrPath.reduce(candidate);
+				@Override
+				public void run(int i) throws Exception {
+
+					// Initialize the cost to zero for a new path
+					cost = 0;
+
+					visited = new BitSet(N);
+
+					// We start from the ith city
+					visited.set(i);
+
+					// Initialize the list
+					listOfCities = new IntList();
+
+					// Add the first city to the list
+					listOfCities.addLast(i);
+
+					while (listOfCities.size() < N) {
+						min = Double.MAX_VALUE;
+						lastCity = listOfCities.get(listOfCities.size() - 1);
+						index = visited.nextClearBit(0);
+						for (int j = 0; j < N; j++) {
+							if ((cities[lastCity].distance(cities[j]) < min)
+									&& (!visited.get(j))) {
+								min = cities[lastCity].distance(cities[j]);
+								index = j;
+							}
+						}
+
+						cost += min;
+						visited.set(index);
+						listOfCities.addLast(index);
+					}
+
+					cost += cities[listOfCities.get(listOfCities.size() - 1)]
+							.distance(cities[i]);
+					listOfCities.addLast(i);
+
+					tspPath.reduce(new TSPPath(cost, listOfCities));
+
 				}
 
 			});
@@ -207,11 +242,10 @@ public class TSPRandomClu extends Job {
 	 */
 	private void usage() {
 		System.err
-				.println("Usage: java pj2 workers=<K> TSPRandomClu <N> <T> <seed>");
+				.println("Usage: java pj2 workers=<K> TSPRandomClu <N> <seed>");
 		System.err.println("where <K> is a number of workers");
 		System.err
 				.println("where <N> is a number of type int giving the number of cities >= 1");
-		System.err.println("and <T> is a number of type long >= 0");
 		System.err
 				.println("and <seed> is a number of type long giving the random seed.");
 		throw new IllegalArgumentException();
@@ -230,10 +264,8 @@ public class TSPRandomClu extends Job {
 		}
 
 		int N = 0;
-		long T = 0;
 		try {
 			N = Integer.parseInt(temp[0]);
-			T = Long.parseLong(temp[1]);
 			Long.parseLong(temp[2]);
 		} catch (NumberFormatException e) {
 			usage(e.getMessage());
@@ -241,10 +273,6 @@ public class TSPRandomClu extends Job {
 
 		if (N < 1) {
 			usage("<N> should be in the range 1 <= N");
-		}
-
-		if (T < 0) {
-			usage("<T> should be in the range 0 <= T");
 		}
 	}
 

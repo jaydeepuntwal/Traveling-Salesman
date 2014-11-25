@@ -49,15 +49,17 @@ public class TSPRandomClu extends Job {
 				int indexRandom = random.nextInt(i + 1);
 				candidateList.swap(i, indexRandom);
 			}
-			
+
 			double dist = 0;
 
 			for (int i = 0; i < candidateList.size() - 1; i++) {
-				dist += cities[candidateList.get(i)].distance(cities[candidateList.get(i + 1)]);
+				dist += cities[candidateList.get(i)]
+						.distance(cities[candidateList.get(i + 1)]);
 			}
 
-			dist += cities[candidateList.get(candidateList.size() - 1)].distance(cities[candidateList.get(0)]);
-			
+			dist += cities[candidateList.get(candidateList.size() - 1)]
+					.distance(cities[candidateList.get(0)]);
+
 			candidate = new TSPPath(dist, candidateList);
 		}
 
@@ -76,7 +78,7 @@ public class TSPRandomClu extends Job {
 			for (int i = 0; i < N; i++) {
 				double x = prng.nextDouble() * 100;
 				double y = prng.nextDouble() * 100;
-				cities[i] = new City(i, x, y);
+				cities[i] = new City(x, y);
 			}
 
 			// Nearest Neighbor

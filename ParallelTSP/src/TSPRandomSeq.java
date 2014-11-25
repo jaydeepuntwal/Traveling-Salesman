@@ -13,15 +13,17 @@ public class TSPRandomSeq extends Task {
 			int indexRandom = random.nextInt(i + 1);
 			candidateList.swap(i, indexRandom);
 		}
-		
+
 		double dist = 0;
 
 		for (int i = 0; i < candidateList.size() - 1; i++) {
-			dist += cities[candidateList.get(i)].distance(cities[candidateList.get(i + 1)]);
+			dist += cities[candidateList.get(i)].distance(cities[candidateList
+					.get(i + 1)]);
 		}
 
-		dist += cities[candidateList.get(candidateList.size() - 1)].distance(cities[candidateList.get(0)]);
-		
+		dist += cities[candidateList.get(candidateList.size() - 1)]
+				.distance(cities[candidateList.get(0)]);
+
 		candidate = new TSPPath(dist, candidateList);
 	}
 
@@ -29,7 +31,7 @@ public class TSPRandomSeq extends Task {
 
 		// Validate input
 		validateInput(args);
-		
+
 		// Input
 		int N = Integer.parseInt(args[0]);
 		long T = Long.parseLong(args[1]);
@@ -42,7 +44,7 @@ public class TSPRandomSeq extends Task {
 		for (int i = 0; i < N; i++) {
 			double x = prng.nextDouble() * 100;
 			double y = prng.nextDouble() * 100;
-			cities[i] = new City(i, x, y);
+			cities[i] = new City(x, y);
 		}
 
 		// Nearest Neighbor Algorithm
@@ -76,7 +78,8 @@ public class TSPRandomSeq extends Task {
 				lastCity = listOfCities.get(listOfCities.size() - 1);
 				index = visited.nextClearBit(0);
 				for (int j = 0; j < N; j++) {
-					if ((cities[lastCity].distance(cities[j]) < min) && (!visited.get(j))) {
+					if ((cities[lastCity].distance(cities[j]) < min)
+							&& (!visited.get(j))) {
 						min = cities[lastCity].distance(cities[j]);
 						index = j;
 					}
@@ -87,7 +90,8 @@ public class TSPRandomSeq extends Task {
 				listOfCities.addLast(index);
 			}
 
-			cost += cities[listOfCities.get(listOfCities.size() - 1)].distance(cities[i]);
+			cost += cities[listOfCities.get(listOfCities.size() - 1)]
+					.distance(cities[i]);
 			listOfCities.addLast(i);
 
 			tspPath.reduce(new TSPPath(cost, listOfCities));
@@ -98,58 +102,62 @@ public class TSPRandomSeq extends Task {
 			shuffle(candidate, cities, seed);
 			tspPath.reduce(candidate);
 		}
-		
+
 		System.out.println(tspPath);
 	}
-	
+
 	/**
-	 * This method displays the error message generated when the user
-	 * enters a wrong input.
-	 * @param msg error message
+	 * This method displays the error message generated when the user enters a
+	 * wrong input.
+	 * 
+	 * @param msg
+	 *            error message
 	 */
 	private void usage(String msg) {
 		System.err.println("TSPRandomSeq: " + msg);
 		usage();
 	}
-	
+
 	/**
-	 * This method displays the command used to run the program and is
-	 * fired when the user enters a wrong input.
+	 * This method displays the command used to run the program and is fired
+	 * when the user enters a wrong input.
 	 */
 	private void usage() {
 		System.err.println("Usage: java pj2 TSPRandomSeq <N> <T> <seed>");
-		System.err.println("where <N> is a number of type int in the range 1 <= N <= 65535 giving the number of cities");
+		System.err
+				.println("where <N> is a number of type int in the range 1 <= N <= 65535 giving the number of cities");
 		System.err.println("and <T> is a number of type long >= 1");
-		System.err.println("and <seed> is a number of type long giving the random seed.");
+		System.err
+				.println("and <seed> is a number of type long giving the random seed.");
 		throw new IllegalArgumentException();
 	}
-	
+
 	/**
-	 * This method validates the input to check if the input is
-	 * an integer greater than or equal to zero.
+	 * This method validates the input to check if the input is an integer
+	 * greater than or equal to zero.
+	 * 
 	 * @param temp
 	 */
 	private void validateInput(String[] temp) {
-		
+
 		if (temp.length != 3) {
 			usage();
 		}
-		
+
 		int N = 0;
 		long T = 0;
 		try {
 			N = Integer.parseInt(temp[0]);
 			T = Long.parseLong(temp[1]);
 			Long.parseLong(temp[2]);
-		}
-		catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			usage(e.getMessage());
 		}
-		
+
 		if (N < 1) {
 			usage("<N> should be in the range 1 <= N <= 65535");
 		}
-		
+
 		if (T < 1) {
 			usage("<T> should be greater than 1");
 		}

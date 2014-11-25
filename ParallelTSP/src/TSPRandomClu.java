@@ -8,7 +8,7 @@
 //******************************************************************************
 
 import edu.rit.pj2.Job;
-import edu.rit.pj2.Loop;
+import edu.rit.pj2.LongLoop;
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;
@@ -132,7 +132,7 @@ public class TSPRandomClu extends Job {
 
 			bestPath = new TSPPath(getDistance(initial), initial);
 
-			workerFor().exec(new Loop() {
+			workerFor().exec(new LongLoop() {
 
 				TSPPath thrPath;
 
@@ -140,7 +140,7 @@ public class TSPRandomClu extends Job {
 					thrPath = threadLocal(bestPath);
 				}
 
-				public void run(int i) {
+				public void run(long i) {
 					TSPPath candidate = thrPath.clone();
 					candidate = shuffle(candidate, cities, seed + rank());
 					thrPath.reduce(candidate);

@@ -21,8 +21,8 @@ public class TSPRandomSeq extends Task {
 		City[] cities = new City[N];
 
 		for (int i = 0; i < N; i++) {
-			double x = prng.nextDouble() * 10;
-			double y = prng.nextDouble() * 10;
+			double x = prng.nextDouble() * 100;
+			double y = prng.nextDouble() * 100;
 			cities[i] = new City(i, x, y);
 		}
 

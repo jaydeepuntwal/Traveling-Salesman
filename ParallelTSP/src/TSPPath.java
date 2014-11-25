@@ -22,7 +22,7 @@ public class TSPPath extends Tuple implements Vbl {
 
 	TSPPath() {
 		this.path = new IntList();
-		this.cost = Integer.MAX_VALUE;
+		this.cost = Double.MAX_VALUE;
 	}
 
 	TSPPath(double cost, IntList path) {

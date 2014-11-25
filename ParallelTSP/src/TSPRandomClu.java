@@ -75,7 +75,7 @@ public class TSPRandomClu extends Job {
 		 * @param cities
 		 * @param seed
 		 */
-		private void shuffle(TSPPath candidate, City[] cities, long seed) {
+		private TSPPath shuffle(TSPPath candidate, City[] cities, long seed) {
 			IntList candidateList = candidate.getPath();
 			Random random = new Random(seed);
 			for (int i = candidateList.size() - 1; i > 0; i--) {
@@ -83,7 +83,7 @@ public class TSPRandomClu extends Job {
 				candidateList.swap(i, indexRandom);
 			}
 
-			candidate = new TSPPath(getDistance(candidateList), candidateList);
+			return new TSPPath(getDistance(candidateList), candidateList);
 		}
 
 		/**
@@ -142,7 +142,7 @@ public class TSPRandomClu extends Job {
 
 				public void run(int i) {
 					TSPPath candidate = bestPath.clone();
-					shuffle(candidate, cities, seed + rank());
+					candidate = shuffle(candidate, cities, seed + rank());
 					thrPath.reduce(candidate);
 				}
 

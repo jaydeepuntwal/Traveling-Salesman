@@ -33,7 +33,7 @@ public class TSPRandomSeq extends Task {
 	 * @param cities
 	 * @param seed
 	 */
-	private void shuffle(TSPPath candidate, City[] cities, long seed) {
+	private TSPPath shuffle(TSPPath candidate, City[] cities, long seed) {
 		IntList candidateList = candidate.getPath();
 		Random random = new Random(seed);
 		for (int i = candidateList.size() - 1; i > 0; i--) {
@@ -41,7 +41,7 @@ public class TSPRandomSeq extends Task {
 			candidateList.swap(i, indexRandom);
 		}
 
-		candidate = new TSPPath(getDistance(candidateList), candidateList);
+		return new TSPPath(getDistance(candidateList), candidateList);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class TSPRandomSeq extends Task {
 		// Heuristic Search
 		for (long i = 0; i < T; i++) {
 			TSPPath candidate = bestPath.clone();
-			shuffle(candidate, cities, seed);
+			candidate = shuffle(candidate, cities, seed);
 			bestPath.reduce(candidate);
 		}
 

@@ -125,7 +125,7 @@ public class TSPRandomSeq extends Task {
 	private void usage() {
 		System.err.println("Usage: java pj2 TSPRandomSeq <N> <T> <seed>");
 		System.err
-				.println("where <N> is a number of type int in the range 1 <= N <= 65535 giving the number of cities");
+				.println("where <N> is a number of type int giving the number of cities >= 1");
 		System.err.println("and <T> is a number of type long >= 1");
 		System.err
 				.println("and <seed> is a number of type long giving the random seed.");
@@ -155,7 +155,7 @@ public class TSPRandomSeq extends Task {
 		}
 
 		if (N < 1) {
-			usage("<N> should be in the range 1 <= N <= 65535");
+			usage("<N> should be in the range 1 <= N");
 		}
 
 		if (T < 1) {

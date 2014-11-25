@@ -21,7 +21,7 @@ public class TSPRandomClu extends Job {
 
 		// Validate Input
 		validateInput(args);
-		
+
 		// Input
 		int N = Integer.parseInt(args[0]);
 		long T = Long.parseLong(args[1]);
@@ -182,7 +182,7 @@ public class TSPRandomClu extends Job {
 		}
 
 	}
-	
+
 	/**
 	 * This method displays the error message generated when the user enters a
 	 * wrong input.
@@ -200,9 +200,11 @@ public class TSPRandomClu extends Job {
 	 * when the user enters a wrong input.
 	 */
 	private void usage() {
-		System.err.println("Usage: java pj2 TSPRandomClu <N> <T> <seed>");
 		System.err
-				.println("where <N> is a number of type int in the range 1 <= N <= 65535 giving the number of cities");
+				.println("Usage: java pj2 workers=<K> TSPRandomClu <N> <T> <seed>");
+		System.err.println("where <K> is a number of workers");
+		System.err
+				.println("where <N> is a number of type int giving the number of cities >= 1");
 		System.err.println("and <T> is a number of type long >= 1");
 		System.err
 				.println("and <seed> is a number of type long giving the random seed.");
@@ -232,7 +234,7 @@ public class TSPRandomClu extends Job {
 		}
 
 		if (N < 1) {
-			usage("<N> should be in the range 1 <= N <= 65535");
+			usage("<N> should be in the range 1 <= N");
 		}
 
 		if (T < 1) {

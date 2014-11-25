@@ -1,11 +1,43 @@
-import java.util.BitSet;
+//******************************************************************************
+//
+// File:    TSPRandomSeq.java
+// 
+// This Java source file uses the Parallel Java 2 Library ("PJ2") developed by
+// Prof. Alan Kaminsky (RIT).
+//
+//******************************************************************************
 
+import java.util.BitSet;
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;
 
+/**
+ * Class TSPRandomSeq is a sequential program that searches a minimum cost path
+ * for given list of cities using Nearest Neighbor Algorithm and Heuristic
+ * Search
+ * 
+ * Nearest Neighbor (NN) Algorithm starts with each of N cities and recursively
+ * travel to next minimum city. The minimum of all is selected
+ * 
+ * After the NN algorithm, a heuristic search is started by shuffling the best
+ * tour and reducing it to obtain most optimal solution
+ * 
+ * Usage: <TT>java pj2 TSPRandomSeq <I>N</I> <I>T</I> <I>Seed</I>...</TT>
+ * 
+ * @author Jaydeep Untwal, Sushil Mohite, Harsh Sadhvani
+ * @version 25-Nov-2014
+ */
 public class TSPRandomSeq extends Task {
 
+	/**
+	 * Shuffle a tour
+	 * 
+	 * @param candidate
+	 *            Tour
+	 * @param cities
+	 * @param seed
+	 */
 	private void shuffle(TSPPath candidate, City[] cities, long seed) {
 		IntList candidateList = candidate.getPath();
 		Random random = new Random(seed);
@@ -27,6 +59,10 @@ public class TSPRandomSeq extends Task {
 		candidate = new TSPPath(dist, candidateList);
 	}
 
+	
+	/**
+	 * Main
+	 */
 	public void main(String args[]) {
 
 		// Validate input
@@ -97,12 +133,15 @@ public class TSPRandomSeq extends Task {
 			tspPath.reduce(new TSPPath(cost, listOfCities));
 		}
 
+		
+		// Heuristic Search
 		for (long i = 0; i < T; i++) {
 			TSPPath candidate = tspPath.clone();
 			shuffle(candidate, cities, seed);
 			tspPath.reduce(candidate);
 		}
 
+		// Print Results
 		System.out.println(tspPath);
 	}
 

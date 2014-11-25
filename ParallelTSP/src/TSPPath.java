@@ -15,10 +15,19 @@ import edu.rit.pj2.Tuple;
 import edu.rit.pj2.Vbl;
 import edu.rit.util.IntList;
 
+/**
+ * Class TSPPath stores a traveling saleman tour with cost It is a tuple and a
+ * thread safe Vbl
+ * 
+ * @author Jaydeep Untwal, Sushil Mohite, Harsh Sadhvani
+ */
 public class TSPPath extends Tuple implements Vbl {
 
+	// Rank of the worker
 	int rank;
+	// Cost of the tour
 	private double cost;
+	// Tour
 	private IntList path;
 
 	TSPPath() {
@@ -30,20 +39,24 @@ public class TSPPath extends Tuple implements Vbl {
 		this.cost = cost;
 		this.path = new IntList(path);
 	}
-	
+
+	/**
+	 * Return the tour
+	 * @return IntList tour
+	 */
 	public IntList getPath() {
 		return new IntList(path);
 	}
 
-	/*
-	 * Match template with rank
+	/**
+	 * Match Tuple with rank
 	 */
 	public boolean matchContent(Tuple target) {
 		TSPPath rt = (TSPPath) target;
 		return this.rank == rt.rank;
 	}
 
-	/*
+	/**
 	 * Serialize Write
 	 */
 	public void writeOut(OutStream out) throws IOException {
@@ -52,7 +65,7 @@ public class TSPPath extends Tuple implements Vbl {
 		out.writeFields(path);
 	}
 
-	/*
+	/**
 	 * Serialize Read
 	 */
 	public void readIn(InStream in) throws IOException {
@@ -61,11 +74,17 @@ public class TSPPath extends Tuple implements Vbl {
 		path = in.readFields(path);
 	}
 
+	/**
+	 * Clone TSPPath
+	 */
 	@Override
 	public TSPPath clone() {
 		return new TSPPath(this.cost, this.path);
 	}
 
+	/**
+	 * Reduce on cost parameter
+	 */
 	@Override
 	public void reduce(Vbl arg0) {
 		TSPPath arg = (TSPPath) arg0;
@@ -74,6 +93,9 @@ public class TSPPath extends Tuple implements Vbl {
 		}
 	}
 
+	/**
+	 * Set self to other
+	 */
 	@Override
 	public void set(Vbl arg0) {
 		TSPPath arg = (TSPPath) arg0;
@@ -81,7 +103,10 @@ public class TSPPath extends Tuple implements Vbl {
 		this.cost = arg.cost;
 		this.path = new IntList(arg.path);
 	}
-	
+
+	/**
+	 * Return tour and cost in String
+	 */
 	@Override
 	public String toString() {
 		IntList temp = new IntList(this.path);

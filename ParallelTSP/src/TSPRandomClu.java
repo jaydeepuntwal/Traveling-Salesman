@@ -1,6 +1,6 @@
 //******************************************************************************
 //
-// File:    TSPClu.java
+// File:    TSPRandomClu.java
 // 
 // This Java source file uses the Parallel Java 2 Library ("PJ2") developed by
 // Prof. Alan Kaminsky (RIT).
@@ -8,15 +8,44 @@
 //******************************************************************************
 
 import java.util.BitSet;
-
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;
 
+/**
+ * Class TSPRandomClu is a cluster parallel program that searches a minimum cost
+ * path for given list of cities using Nearest Neighbor Algorithm and Heuristic
+ * Search
+ * 
+ * Nearest Neighbor (NN) Algorithm starts with each of N cities and recursively
+ * travel to next minimum city. The minimum of all is selected
+ * 
+ * It divides (N - 1) cities into chunks and each chunk is given to a cluster
+ * node, where it searches for a optimal path from every starting city in its
+ * chunk in parallel on multiple threads. If found, it reduces it to the best
+ * path.
+ * 
+ * After all threads finish, the worker starts a heuristic search (T iterations)
+ * by shuffling the best tour and reducing it to obtain most optimal solution
+ * 
+ * Worker then puts a tuple in tuple space for the reducer task.
+ * 
+ * A separate Reduce Task collects all tuples after the all workers finish and
+ * prints the best path
+ * 
+ * Usage:
+ * <TT>java pj2 workers=<I>K</I> TSPRandomClu <I>N</I> <I>T</I> <I>Seed</I>...</TT>
+ * 
+ * @author Jaydeep Untwal, Sushil Mohite, Harsh Sadhvani
+ * @version 25-Nov-2014
+ */
 public class TSPRandomClu extends Job {
 
+	/**
+	 * Main
+	 */
 	public void main(String[] args) {
 
 		// Validate Input
@@ -26,11 +55,13 @@ public class TSPRandomClu extends Job {
 		int N = Integer.parseInt(args[0]);
 		long T = Long.parseLong(args[1]);
 
+		// Number of workers
 		int K = workers();
 		if (K == DEFAULT_WORKERS) {
 			K = 1;
 		}
 
+		// Number of heuristic iterations for each worker
 		T = T / K;
 
 		masterFor(0, N - 1, TSPWorkerTask.class).args(args[0], "" + T, args[2]);
@@ -40,11 +71,23 @@ public class TSPRandomClu extends Job {
 				.runInJobProcess();
 	}
 
+	/**
+	 * Worker Task to perform Nearest Neighbor Algorithm with Heuristic Search
+	 * on a chunk
+	 */
 	private static class TSPWorkerTask extends Task {
 
 		TSPPath bestPath;
 		City[] cities;
 
+		/**
+		 * Shuffle a tour
+		 * 
+		 * @param candidate
+		 *            Tour
+		 * @param cities
+		 * @param seed
+		 */
 		private void shuffle(TSPPath candidate, City[] cities, long seed) {
 			IntList candidateList = candidate.getPath();
 			Random random = new Random(seed);
@@ -66,6 +109,9 @@ public class TSPRandomClu extends Job {
 			candidate = new TSPPath(dist, candidateList);
 		}
 
+		/**
+		 * Main
+		 */
 		@Override
 		public void main(String[] args) throws Exception {
 
@@ -147,30 +193,41 @@ public class TSPRandomClu extends Job {
 
 			});
 
+			// Heuristic Search
 			for (long i = 0; i < T; i++) {
 				TSPPath candidate = bestPath.clone();
 				shuffle(candidate, cities, seed);
 				bestPath.reduce(candidate);
 			}
 
+			// Put Tuple
 			bestPath.rank = taskRank();
 			putTuple(bestPath);
 		}
 	}
 
+	/**
+	 * Reduce class to get all tuples and print the best
+	 */
 	private static class TSPReduceTask extends Task {
 
 		@Override
 		public void main(String[] args) throws Exception {
 
+			// Number of workers
 			int K = Integer.parseInt(args[0]);
 
+			// Template
 			TSPPath template = new TSPPath();
 			template.rank = 0;
+
+			// Tuple
 			TSPPath tt;
 
+			// Best Tuple
 			TSPPath bestTT = new TSPPath();
 
+			// Get Tuples
 			for (int i = 0; i < K; i++) {
 				tt = takeTuple(template);
 				bestTT.reduce(tt);

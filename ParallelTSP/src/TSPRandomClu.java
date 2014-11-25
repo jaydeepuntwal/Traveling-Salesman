@@ -143,7 +143,7 @@ public class TSPRandomClu extends Job {
 
 				public void run(int i) {
 					TSPPath candidate = bestPath.clone();
-					shuffle(candidate, cities, seed);
+					shuffle(candidate, cities, seed + rank());
 					thrPath.reduce(candidate);
 				}
 

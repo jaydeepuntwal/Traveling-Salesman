@@ -80,7 +80,7 @@ public class TSPPath extends Tuple implements Vbl {
 	 */
 	@Override
 	public TSPPath clone() {
-		return new TSPPath(this.cost, this.path);
+		return new TSPPath(this.cost, new IntList(this.path));
 	}
 
 	/**

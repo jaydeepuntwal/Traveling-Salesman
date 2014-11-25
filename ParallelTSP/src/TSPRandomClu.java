@@ -80,7 +80,6 @@ public class TSPRandomClu extends Job {
 			Random random = new Random(seed);
 			for (int i = candidateList.size() - 1; i > 0; i--) {
 				int indexRandom = random.nextInt(i + 1);
-				random.setSeed(seed + indexRandom);
 				candidateList.swap(i, indexRandom);
 			}
 

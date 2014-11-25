@@ -19,6 +19,9 @@ public class TSPRandomClu extends Job {
 
 	public void main(String[] args) {
 
+		// Validate Input
+		validateInput(args);
+		
 		// Input
 		int N = Integer.parseInt(args[0]);
 		long T = Long.parseLong(args[1]);
@@ -178,6 +181,63 @@ public class TSPRandomClu extends Job {
 			System.out.println(bestTT);
 		}
 
+	}
+	
+	/**
+	 * This method displays the error message generated when the user enters a
+	 * wrong input.
+	 * 
+	 * @param msg
+	 *            error message
+	 */
+	private void usage(String msg) {
+		System.err.println("TSPRandomClu: " + msg);
+		usage();
+	}
+
+	/**
+	 * This method displays the command used to run the program and is fired
+	 * when the user enters a wrong input.
+	 */
+	private void usage() {
+		System.err.println("Usage: java pj2 TSPRandomClu <N> <T> <seed>");
+		System.err
+				.println("where <N> is a number of type int in the range 1 <= N <= 65535 giving the number of cities");
+		System.err.println("and <T> is a number of type long >= 1");
+		System.err
+				.println("and <seed> is a number of type long giving the random seed.");
+		throw new IllegalArgumentException();
+	}
+
+	/**
+	 * This method validates the input to check if the input is an integer
+	 * greater than or equal to zero.
+	 * 
+	 * @param temp
+	 */
+	private void validateInput(String[] temp) {
+
+		if (temp.length != 3) {
+			usage();
+		}
+
+		int N = 0;
+		long T = 0;
+		try {
+			N = Integer.parseInt(temp[0]);
+			T = Long.parseLong(temp[1]);
+			Long.parseLong(temp[2]);
+		} catch (NumberFormatException e) {
+			usage(e.getMessage());
+		}
+
+		if (N < 1) {
+			usage("<N> should be in the range 1 <= N <= 65535");
+		}
+
+		if (T < 1) {
+			usage("<T> should be greater than 1");
+		}
 	}
 
 }

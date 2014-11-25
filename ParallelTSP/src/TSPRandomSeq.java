@@ -1,33 +1,35 @@
 import java.util.BitSet;
+
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;
 
 public class TSPRandomSeq extends Task {
 
-	private void shuffle(TSPPath candidate, long seed) {
+	private void shuffle(TSPPath candidate, City[] cities, long seed) {
+		IntList candidateList = candidate.getPath();
 		Random random = new Random(seed);
-		for (int i = candidate.path.size() - 1; i > 0; i--) {
+		for (int i = candidateList.size() - 1; i > 0; i--) {
 			int indexRandom = random.nextInt(i + 1);
-			candidate.path.swap(i, indexRandom);
+			candidateList.swap(i, indexRandom);
 		}
-	}
-
-	public static double getDistance(IntList path, City[] cities) {
-
+		
 		double dist = 0;
 
-		for (int i = 0; i < path.size() - 1; i++) {
-			dist += cities[path.get(i)].distance(cities[path.get(i + 1)]);
+		for (int i = 0; i < candidateList.size() - 1; i++) {
+			dist += cities[candidateList.get(i)].distance(cities[candidateList.get(i + 1)]);
 		}
 
-		dist += cities[path.get(path.size() - 1)].distance(cities[path.get(0)]);
-
-		return dist;
+		dist += cities[candidateList.get(candidateList.size() - 1)].distance(cities[candidateList.get(0)]);
+		
+		candidate = new TSPPath(dist, candidateList);
 	}
 
 	public void main(String args[]) {
 
+		// Validate input
+		validateInput(args);
+		
 		// Input
 		int N = Integer.parseInt(args[0]);
 		long T = Long.parseLong(args[1]);
@@ -48,9 +50,9 @@ public class TSPRandomSeq extends Task {
 		int index;
 		BitSet visited;
 		IntList listOfCities;
-		TSPPath tspPath = new TSPPath();
 		double cost;
 		int lastCity;
+		TSPPath tspPath = new TSPPath();
 
 		// Determines the first city from where the path is to be started
 		for (int i = 0; i < N; i++) {
@@ -74,8 +76,7 @@ public class TSPRandomSeq extends Task {
 				lastCity = listOfCities.get(listOfCities.size() - 1);
 				index = visited.nextClearBit(0);
 				for (int j = 0; j < N; j++) {
-					if ((cities[lastCity].distance(cities[j]) < min)
-							&& (!visited.get(j))) {
+					if ((cities[lastCity].distance(cities[j]) < min) && (!visited.get(j))) {
 						min = cities[lastCity].distance(cities[j]);
 						index = j;
 					}
@@ -86,8 +87,7 @@ public class TSPRandomSeq extends Task {
 				listOfCities.addLast(index);
 			}
 
-			cost += cities[listOfCities.get(listOfCities.size() - 1)]
-					.distance(cities[i]);
+			cost += cities[listOfCities.get(listOfCities.size() - 1)].distance(cities[i]);
 			listOfCities.addLast(i);
 
 			tspPath.reduce(new TSPPath(cost, listOfCities));
@@ -95,22 +95,64 @@ public class TSPRandomSeq extends Task {
 
 		for (long i = 0; i < T; i++) {
 			TSPPath candidate = tspPath.clone();
-			shuffle(candidate, seed);
-			candidate.cost = getDistance(candidate.path, cities);
+			shuffle(candidate, cities, seed);
 			tspPath.reduce(candidate);
 		}
-
-		// Display results
-		while (!tspPath.path.isEmpty()) {
-			if (tspPath.path.size() != 1)
-				System.out.print(cities[tspPath.path.removeFirst()].id
-						+ " --> ");
-			else
-				System.out.println(cities[tspPath.path.removeFirst()].id);
+		
+		System.out.println(tspPath);
+	}
+	
+	/**
+	 * This method displays the error message generated when the user
+	 * enters a wrong input.
+	 * @param msg error message
+	 */
+	private void usage(String msg) {
+		System.err.println("TSPRandomSeq: " + msg);
+		usage();
+	}
+	
+	/**
+	 * This method displays the command used to run the program and is
+	 * fired when the user enters a wrong input.
+	 */
+	private void usage() {
+		System.err.println("Usage: java pj2 TSPRandomSeq <N> <T> <seed>");
+		System.err.println("where <N> is a number of type int in the range 1 <= N <= 65535 giving the number of cities");
+		System.err.println("and <T> is a number of type long >= 1");
+		System.err.println("and <seed> is a number of type long giving the random seed.");
+		throw new IllegalArgumentException();
+	}
+	
+	/**
+	 * This method validates the input to check if the input is
+	 * an integer greater than or equal to zero.
+	 * @param temp
+	 */
+	private void validateInput(String[] temp) {
+		
+		if (temp.length != 3) {
+			usage();
 		}
-
-		System.out.printf("Total Cost: %.3f Km%n", tspPath.cost);
-
+		
+		int N = 0;
+		long T = 0;
+		try {
+			N = Integer.parseInt(temp[0]);
+			T = Long.parseLong(temp[1]);
+			Long.parseLong(temp[2]);
+		}
+		catch(NumberFormatException e) {
+			usage(e.getMessage());
+		}
+		
+		if (N < 1) {
+			usage("<N> should be in the range 1 <= N <= 65535");
+		}
+		
+		if (T < 1) {
+			usage("<T> should be greater than 1");
+		}
 	}
 
 }

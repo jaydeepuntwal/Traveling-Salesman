@@ -42,26 +42,23 @@ public class TSPRandomClu extends Job {
 		TSPPath bestPath;
 		City[] cities;
 
-		private void shuffle(TSPPath candidate, long seed) {
+		private void shuffle(TSPPath candidate, City[] cities, long seed) {
+			IntList candidateList = candidate.getPath();
 			Random random = new Random(seed);
-			for (int i = candidate.path.size() - 1; i > 0; i--) {
+			for (int i = candidateList.size() - 1; i > 0; i--) {
 				int indexRandom = random.nextInt(i + 1);
-				candidate.path.swap(i, indexRandom);
+				candidateList.swap(i, indexRandom);
 			}
-		}
-
-		public static double getDistance(IntList path, City[] cities) {
-
+			
 			double dist = 0;
 
-			for (int i = 0; i < path.size() - 1; i++) {
-				dist += cities[path.get(i)].distance(cities[path.get(i + 1)]);
+			for (int i = 0; i < candidateList.size() - 1; i++) {
+				dist += cities[candidateList.get(i)].distance(cities[candidateList.get(i + 1)]);
 			}
 
-			dist += cities[path.get(path.size() - 1)].distance(cities[path
-					.get(0)]);
-
-			return dist;
+			dist += cities[candidateList.get(candidateList.size() - 1)].distance(cities[candidateList.get(0)]);
+			
+			candidate = new TSPPath(dist, candidateList);
 		}
 
 		@Override
@@ -147,8 +144,7 @@ public class TSPRandomClu extends Job {
 
 			for (long i = 0; i < T; i++) {
 				TSPPath candidate = bestPath.clone();
-				shuffle(candidate, seed);
-				candidate.cost = getDistance(candidate.path, cities);
+				shuffle(candidate, cities, seed);
 				bestPath.reduce(candidate);
 			}
 
@@ -168,28 +164,16 @@ public class TSPRandomClu extends Job {
 			template.rank = 0;
 			TSPPath tt;
 
-			TSPPath bestTT = null;
+			TSPPath bestTT = new TSPPath();
 
 			for (int i = 0; i < K; i++) {
 				tt = takeTuple(template);
-				if (bestTT == null) {
-					bestTT = tt;
-				} else if (tt.cost < bestTT.cost) {
-					bestTT = tt;
-				}
+				bestTT.reduce(tt);
 				template.rank++;
 			}
 
 			// Display results
-			while (!bestTT.path.isEmpty()) {
-				if (bestTT.path.size() != 1)
-					System.out.print(bestTT.path.removeFirst() + " --> ");
-				else
-					System.out.println(bestTT.path.removeFirst());
-			}
-
-			System.out.printf("Total Cost: %.3f Km%n", bestTT.cost);
-
+			System.out.println(bestTT);
 		}
 
 	}

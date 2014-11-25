@@ -8,6 +8,7 @@
 //******************************************************************************
 
 import java.io.IOException;
+
 import edu.rit.io.InStream;
 import edu.rit.io.OutStream;
 import edu.rit.pj2.Tuple;
@@ -17,8 +18,8 @@ import edu.rit.util.IntList;
 public class TSPPath extends Tuple implements Vbl {
 
 	int rank;
-	double cost;
-	IntList path;
+	private double cost;
+	private IntList path;
 
 	TSPPath() {
 		this.path = new IntList();
@@ -28,6 +29,10 @@ public class TSPPath extends Tuple implements Vbl {
 	TSPPath(double cost, IntList path) {
 		this.cost = cost;
 		this.path = new IntList(path);
+	}
+	
+	public IntList getPath() {
+		return new IntList(path);
 	}
 
 	/*
@@ -58,7 +63,7 @@ public class TSPPath extends Tuple implements Vbl {
 
 	@Override
 	public TSPPath clone() {
-		return new TSPPath(this.cost, new IntList(this.path));
+		return new TSPPath(this.cost, this.path);
 	}
 
 	@Override
@@ -75,5 +80,20 @@ public class TSPPath extends Tuple implements Vbl {
 		this.rank = arg.rank;
 		this.cost = arg.cost;
 		this.path = new IntList(arg.path);
+	}
+	
+	@Override
+	public String toString() {
+		IntList temp = new IntList(this.path);
+		String output = "";
+		while (!temp.isEmpty()) {
+			if (temp.size() != 1)
+				output += temp.removeFirst() + " --> ";
+			else
+				output += temp.removeFirst();
+		}
+
+		output = output + "\n" + String.format("Total Cost: %.3f Km%n", cost);
+		return output;
 	}
 }

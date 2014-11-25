@@ -8,7 +8,6 @@
 //******************************************************************************
 
 import java.util.BitSet;
-
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;

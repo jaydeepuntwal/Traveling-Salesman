@@ -1,8 +1,4 @@
-import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Collections;
-import java.util.List;
-
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;

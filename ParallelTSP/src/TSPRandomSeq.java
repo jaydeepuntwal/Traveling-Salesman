@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
+
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;
@@ -54,7 +56,7 @@ public class TSPRandomSeq extends Task {
 		// Nearest Neighbor Algorithm
 		double min;
 		int index;
-		boolean[] visited = new boolean[N];
+		BitSet visited = new BitSet(N);
 		IntList listOfCities;
 		TSPPath tspPath = new TSPPath();
 		double cost;
@@ -66,12 +68,8 @@ public class TSPRandomSeq extends Task {
 			// Initialize the cost to zero for a new path
 			cost = 0;
 
-			for (int j = 0; j < N; j++) {
-				visited[j] = false;
-			}
-
 			// We start from the ith city
-			visited[i] = true;
+			visited.set(i);
 
 			// Initialize the list
 			listOfCities = new IntList();
@@ -82,17 +80,17 @@ public class TSPRandomSeq extends Task {
 			while (listOfCities.size() < N) {
 				min = Double.MAX_VALUE;
 				lastCity = listOfCities.get(listOfCities.size() - 1);
-				index = 0;
+				index = visited.nextClearBit(0);
 				for (int j = 0; j < N; j++) {
 					if ((cities[lastCity].distance(cities[j]) < min)
-							&& (!visited[j])) {
+							&& (!visited.get(j))) {
 						min = cities[lastCity].distance(cities[j]);
 						index = j;
 					}
 				}
 
 				cost += min;
-				visited[index] = true;
+				visited.set(index);
 				listOfCities.addLast(index);
 			}
 

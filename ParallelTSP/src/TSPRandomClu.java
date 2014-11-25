@@ -7,15 +7,11 @@
 //
 //******************************************************************************
 
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.BitSet;
 
-import edu.rit.io.InStream;
-import edu.rit.io.OutStream;
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;
-import edu.rit.pj2.Tuple;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;
 
@@ -72,7 +68,7 @@ public class TSPRandomClu extends Job {
 
 				double min;
 				int index;
-				boolean[] visited;
+				BitSet visited;
 				IntList listOfCities;
 				TSPPath thrPath;
 				double cost;
@@ -80,7 +76,7 @@ public class TSPRandomClu extends Job {
 
 				@Override
 				public void start() {
-					visited = new boolean[N];
+					visited = new BitSet(N);
 					listOfCities = new IntList();
 					thrPath = threadLocal(bestPath);
 				}
@@ -91,12 +87,8 @@ public class TSPRandomClu extends Job {
 					// Initialize the cost to zero for a new path
 					cost = 0;
 
-					for (int j = 0; j < N; j++) {
-						visited[j] = false;
-					}
-
 					// We start from the ith city
-					visited[i] = true;
+					visited.set(i);
 
 					// Add the first city to the list
 					listOfCities.addLast(i);
@@ -104,17 +96,17 @@ public class TSPRandomClu extends Job {
 					while (listOfCities.size() < N) {
 						min = Double.MAX_VALUE;
 						lastCity = listOfCities.get(listOfCities.size() - 1);
-						index = 0;
+						index = visited.nextClearBit(0);
 						for (int j = 0; j < N; j++) {
 							if ((cities[lastCity].distance(cities[j]) < min)
-									&& (!visited[j])) {
+									&& (!visited.get(j))) {
 								min = cities[lastCity].distance(cities[j]);
 								index = j;
 							}
 						}
 
 						cost += min;
-						visited[index] = true;
+						visited.set(index);
 						listOfCities.addLast(index);
 					}
 

@@ -104,7 +104,7 @@ public class TSPRandomClu extends Job {
 					while (listOfCities.size() != N) {
 						min = Double.MAX_VALUE;
 						lastCity = listOfCities.get(listOfCities.size() - 1);
-						index = -1;
+						index = 0;
 						for (int j = 0; j < N; j++) {
 							if ((cities[lastCity].distance(cities[j]) < min)
 									&& (!visited[j])) {

@@ -1,7 +1,7 @@
 public class City {
 
-	double x;
-	double y;
+	private double x;
+	private double y;
 
 	City(double x, double y) {
 		this.x = x;

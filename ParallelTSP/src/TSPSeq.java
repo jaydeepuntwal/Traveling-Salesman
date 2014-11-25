@@ -62,7 +62,7 @@ public class TSPSeq extends Job {
 				// Add the first city to the list
 				listOfCities.addLast(i);
 
-				while (listOfCities.size() != n) {
+				while (listOfCities.size() < n) {
 					min = Integer.MAX_VALUE;
 					lastCity = listOfCities.get(listOfCities.size() - 1);
 					index = -1;

@@ -101,7 +101,7 @@ public class TSPRandomClu extends Job {
 					// Add the first city to the list
 					listOfCities.addLast(i);
 
-					while (listOfCities.size() != N) {
+					while (listOfCities.size() < N) {
 						min = Double.MAX_VALUE;
 						lastCity = listOfCities.get(listOfCities.size() - 1);
 						index = 0;

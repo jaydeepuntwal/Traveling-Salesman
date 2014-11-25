@@ -16,7 +16,7 @@ import edu.rit.pj2.Vbl;
 import edu.rit.util.IntList;
 
 /**
- * Class TSPPath stores a traveling saleman tour with cost It is a tuple and a
+ * Class TSPPath stores a traveling salesman tour with cost It is a tuple and a
  * thread safe Vbl
  * 
  * @author Jaydeep Untwal, Sushil Mohite, Harsh Sadhvani

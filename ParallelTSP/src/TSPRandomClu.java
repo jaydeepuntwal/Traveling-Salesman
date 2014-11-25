@@ -43,7 +43,6 @@ public class TSPRandomClu extends Job {
 		validateInput(args);
 
 		// Input
-		int N = Integer.parseInt(args[0]);
 		long T = Long.parseLong(args[1]);
 
 		// Number of workers

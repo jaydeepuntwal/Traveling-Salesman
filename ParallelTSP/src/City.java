@@ -11,7 +11,7 @@ public class City {
 	}
 
 	public double distance(City c) {
-		double euc = Math.pow((this.x - c.x), 2) + Math.pow((this.y - c.y), 2);
+		double euc = Math.sqrt(Math.pow((this.x - c.x), 2) + Math.pow((this.y - c.y), 2));
 		return euc;
 	}
 

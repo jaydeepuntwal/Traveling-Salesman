@@ -17,7 +17,7 @@ import edu.rit.util.IntList;
 public class TSPPath extends Tuple implements Vbl {
 
 	int rank;
-	int cost;
+	double cost;
 	IntList path;
 
 	TSPPath() {
@@ -25,7 +25,7 @@ public class TSPPath extends Tuple implements Vbl {
 		this.cost = Integer.MAX_VALUE;
 	}
 
-	TSPPath(int cost, IntList path) {
+	TSPPath(double cost, IntList path) {
 		this.cost = cost;
 		this.path = new IntList(path);
 	}
@@ -43,7 +43,7 @@ public class TSPPath extends Tuple implements Vbl {
 	 */
 	public void writeOut(OutStream out) throws IOException {
 		out.writeInt(rank);
-		out.writeInt(cost);
+		out.writeDouble(cost);
 		out.writeFields(path);
 	}
 
@@ -52,7 +52,7 @@ public class TSPPath extends Tuple implements Vbl {
 	 */
 	public void readIn(InStream in) throws IOException {
 		rank = in.readInt();
-		cost = in.readInt();
+		cost = in.readDouble();
 		path = in.readFields(path);
 	}
 

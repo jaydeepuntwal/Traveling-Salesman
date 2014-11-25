@@ -111,13 +111,13 @@ public class TSPPath extends Tuple implements Vbl {
 	@Override
 	public String toString() {
 		IntList temp = new IntList(this.path);
+		String first = "" + temp.get(0);
 		String output = "";
 		while (!temp.isEmpty()) {
-			if (temp.size() != 1)
-				output += temp.removeFirst() + " --> ";
-			else
-				output += temp.removeFirst();
+			output += temp.removeFirst() + " --> ";
 		}
+
+		output += first;
 
 		output = output + "\n" + String.format("Total Cost: %.3f%n", cost);
 		return output;

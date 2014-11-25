@@ -93,7 +93,6 @@ public class TSPSeq extends Task {
 
 			cost += cities[listOfCities.get(listOfCities.size() - 1)]
 					.distance(cities[i]);
-			listOfCities.addLast(i);
 
 			tspPath.reduce(new TSPPath(cost, listOfCities));
 		}

@@ -55,7 +55,7 @@ public class TSPRandomSeq extends Task {
 			listOfCities.addLast(i);
 
 			while (listOfCities.size() != N) {
-				min = Integer.MAX_VALUE;
+				min = Double.MAX_VALUE;
 				lastCity = listOfCities.get(listOfCities.size() - 1);
 				index = -1;
 				for (int j = 0; j < N; j++) {
@@ -88,9 +88,10 @@ public class TSPRandomSeq extends Task {
 		// Display results
 		while (!tspPath.path.isEmpty()) {
 			if (tspPath.path.size() != 1)
-				System.out.print(cities[tspPath.path.removeFirst()] + " --> ");
+				System.out.print(cities[tspPath.path.removeFirst()].id
+						+ " --> ");
 			else
-				System.out.println(cities[tspPath.path.removeFirst()]);
+				System.out.println(cities[tspPath.path.removeFirst()].id);
 		}
 
 		System.out.println("Total Cost: " + tspPath.cost + " Km.");

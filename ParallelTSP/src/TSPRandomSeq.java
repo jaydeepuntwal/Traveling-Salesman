@@ -9,18 +9,12 @@ import edu.rit.util.Random;
 
 public class TSPRandomSeq extends Task {
 
-	private void shuffle(TSPPath candidate) {
-		List<Integer> path = new ArrayList<Integer>();
-		for (int i = 0; i < candidate.path.size(); i++) {
-			path.add(candidate.path.get(i));
+	private void shuffle(TSPPath candidate, long seed) {
+		Random random = new Random(seed);
+		for (int i = candidate.path.size() - 1; i > 0; i--) {
+			int indexRandom = random.nextInt(i + 1);
+			candidate.path.swap(i, indexRandom);
 		}
-		candidate.path.clear();
-		Collections.shuffle(path);
-
-		for (Integer i : path) {
-			candidate.path.addLast(i);
-		}
-
 	}
 
 	public static double getDistance(IntList path, City[] cities) {
@@ -67,7 +61,7 @@ public class TSPRandomSeq extends Task {
 
 			// Initialize the cost to zero for a new path
 			cost = 0;
-			
+
 			visited = new BitSet(N);
 
 			// We start from the ith city
@@ -105,7 +99,7 @@ public class TSPRandomSeq extends Task {
 
 		for (long i = 0; i < T; i++) {
 			TSPPath candidate = tspPath.clone();
-			shuffle(candidate);
+			shuffle(candidate, seed);
 			candidate.cost = getDistance(candidate.path, cities);
 			tspPath.reduce(candidate);
 		}

@@ -56,7 +56,7 @@ public class TSPRandomSeq extends Task {
 		// Nearest Neighbor Algorithm
 		double min;
 		int index;
-		BitSet visited;// = new BitSet(N);
+		BitSet visited;
 		IntList listOfCities;
 		TSPPath tspPath = new TSPPath();
 		double cost;

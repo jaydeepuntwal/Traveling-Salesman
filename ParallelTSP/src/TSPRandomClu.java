@@ -70,15 +70,13 @@ public class TSPRandomClu extends Job {
 				int index;
 				BitSet visited;
 				IntList listOfCities;
-				TSPPath thrPath;
+				TSPPath tspPath;
 				double cost;
 				int lastCity;
 
 				@Override
 				public void start() {
-					//visited = new BitSet(N);
-					listOfCities = new IntList();
-					thrPath = threadLocal(bestPath);
+					tspPath = threadLocal(bestPath);
 				}
 
 				@Override
@@ -88,7 +86,7 @@ public class TSPRandomClu extends Job {
 					cost = 0;
 
 					visited = new BitSet(N);
-					
+
 					// We start from the ith city
 					visited.set(i);
 
@@ -116,7 +114,7 @@ public class TSPRandomClu extends Job {
 							.distance(cities[i]);
 					listOfCities.addLast(i);
 
-					thrPath.reduce(new TSPPath(cost, listOfCities));
+					tspPath.reduce(new TSPPath(cost, listOfCities));
 
 				}
 

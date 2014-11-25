@@ -1,13 +1,38 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
-import edu.rit.pj2.Job;
 import edu.rit.pj2.Task;
 import edu.rit.util.IntList;
 import edu.rit.util.Random;
 
 public class TSPRandomSeq extends Task {
+
+	private void shuffle(TSPPath candidate) {
+		List<Integer> path = new ArrayList<Integer>();
+		for (int i = 0; i < candidate.path.size(); i++) {
+			path.add(candidate.path.get(i));
+		}
+		candidate.path.clear();
+		Collections.shuffle(path);
+
+		for (Integer i : path) {
+			candidate.path.addLast(i);
+		}
+
+	}
+
+	public static double getDistance(IntList path, City[] cities) {
+
+		double dist = 0;
+
+		for (int i = 0; i < path.size() - 1; i++) {
+			dist += cities[path.get(i)].distance(cities[path.get(i + 1)]);
+		}
+
+		dist += cities[path.get(path.size() - 1)].distance(cities[path.get(0)]);
+
+		return dist;
+	}
 
 	public void main(String args[]) {
 
@@ -96,33 +121,6 @@ public class TSPRandomSeq extends Task {
 
 		System.out.printf("Total Cost: %.3f Km%n", tspPath.cost);
 
-	}
-
-	private void shuffle(TSPPath candidate) {
-		List<Integer> path = new ArrayList<Integer>();
-		for (int i = 0; i < candidate.path.size(); i++) {
-			path.add(candidate.path.get(i));
-		}
-		candidate.path.clear();
-		Collections.shuffle(path);
-
-		for (Integer i : path) {
-			candidate.path.addLast(i);
-		}
-
-	}
-
-	public static double getDistance(IntList path, City[] cities) {
-
-		double dist = 0;
-
-		for (int i = 0; i < path.size() - 1; i++) {
-			dist += cities[path.get(i)].distance(cities[path.get(i + 1)]);
-		}
-
-		dist += cities[path.get(path.size() - 1)].distance(cities[path.get(0)]);
-
-		return dist;
 	}
 
 }

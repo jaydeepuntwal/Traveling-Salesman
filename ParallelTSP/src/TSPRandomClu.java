@@ -90,6 +90,9 @@ public class TSPRandomClu extends Job {
 					// We start from the ith city
 					visited.set(i);
 
+					// Initialize the list
+					listOfCities = new IntList();
+
 					// Add the first city to the list
 					listOfCities.addLast(i);
 

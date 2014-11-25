@@ -230,7 +230,7 @@ public class TSPClu extends Job {
 	 */
 	private void validateInput(String[] temp) {
 
-		if (temp.length != 3) {
+		if (temp.length != 2) {
 			usage();
 		}
 

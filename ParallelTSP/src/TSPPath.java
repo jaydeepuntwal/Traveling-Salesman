@@ -42,6 +42,7 @@ public class TSPPath extends Tuple implements Vbl {
 
 	/**
 	 * Return the tour
+	 * 
 	 * @return IntList tour
 	 */
 	public IntList getPath() {
@@ -118,7 +119,7 @@ public class TSPPath extends Tuple implements Vbl {
 				output += temp.removeFirst();
 		}
 
-		output = output + "\n" + String.format("Total Cost: %.3f Km%n", cost);
+		output = output + "\n" + String.format("Total Cost: %.3f%n", cost);
 		return output;
 	}
 }

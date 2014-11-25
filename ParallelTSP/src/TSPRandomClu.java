@@ -33,7 +33,8 @@ public class TSPRandomClu extends Job {
 			K = 1;
 		}
 
-		masterFor(0, N - 1, TSPWorkerTask.class).args(args);
+		masterFor(0, N - 1, TSPWorkerTask.class)
+				.args(args[0], args[1], args[2]);
 
 		// Set up Final task.
 		rule().atFinish().task(TSPReduceTask.class).args("" + K)

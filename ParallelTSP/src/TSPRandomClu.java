@@ -58,6 +58,7 @@ public class TSPRandomClu extends Job {
 		rule().atFinish().task(TSPReduceTask.class).args("" + K)
 				.runInJobProcess();
 		System.out.println(Debug.makespan);
+		//
 
 	}
 

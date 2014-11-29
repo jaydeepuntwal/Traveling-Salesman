@@ -8,6 +8,8 @@
 //******************************************************************************
 
 import java.util.BitSet;
+
+import edu.rit.pj2.Debug;
 import edu.rit.pj2.Job;
 import edu.rit.pj2.Loop;
 import edu.rit.pj2.Task;
@@ -42,6 +44,7 @@ public class TSPClu extends Job {
 	/**
 	 * Main
 	 */
+
 	public void main(String[] args) {
 
 		// Validate Input
@@ -61,6 +64,7 @@ public class TSPClu extends Job {
 		// Set up Final task.
 		rule().atFinish().task(TSPReduceTask.class).args("" + K)
 				.runInJobProcess();
+		
 	}
 
 	/**
@@ -245,5 +249,6 @@ public class TSPClu extends Job {
 			usage("<N> should be in the range 1 <= N");
 		}
 	}
+	
 
 }

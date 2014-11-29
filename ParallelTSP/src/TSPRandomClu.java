@@ -7,6 +7,7 @@
 //
 //******************************************************************************
 
+import edu.rit.pj2.Debug;
 import edu.rit.pj2.Job;
 import edu.rit.pj2.LongLoop;
 import edu.rit.pj2.Task;
@@ -56,6 +57,8 @@ public class TSPRandomClu extends Job {
 		// Set up Final task.
 		rule().atFinish().task(TSPReduceTask.class).args("" + K)
 				.runInJobProcess();
+		System.out.println(Debug.makespan);
+
 	}
 
 	/**

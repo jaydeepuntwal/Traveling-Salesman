@@ -135,6 +135,9 @@ public class TSPRandomClu extends Job {
 
 			bestPath = new TSPPath(getDistance(initial), initial);
 
+			// Shuffle once
+			bestPath = shuffle(bestPath, cities, seed);
+
 			workerFor().exec(new LongLoop() {
 
 				TSPPath thrPath;

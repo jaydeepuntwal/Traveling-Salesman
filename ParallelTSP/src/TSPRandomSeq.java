@@ -92,6 +92,9 @@ public class TSPRandomSeq extends Task {
 
 		bestPath = new TSPPath(getDistance(initial), initial);
 
+		// Shuffle once
+		bestPath = shuffle(bestPath, cities, seed);
+
 		// Heuristic Search
 		for (long i = 0; i < T; i++) {
 			TSPPath candidate = bestPath.clone();
